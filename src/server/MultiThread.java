@@ -48,12 +48,19 @@ public class MultiThread implements Runnable {
 						SendReceiveServer.send("Qual a sua função: 1 - Adm 2 - Usuario ", socket);
 						String function = (String) SendReceiveServer.receive(socket);
 						if(function == "1") {
-							Adm objeto = new Adm("", name);
+							String id;
+							Double createPass = ((Math.random()* 10000)+ 1);
+							id = "A" + Double.toString(createPass);
+							Adm objeto = new Adm(id, name);
 							String checkOrAdd = DaoAdm.addClient(objeto);
 							SendReceiveServer.send(checkOrAdd, socket);
 						}else {
-							User objeto = new User("", name, 0, null);
+							String id;
+							Double createPass = ((Math.random()* 10000)+ 1);
+							id = "U" + Double.toString(createPass);
+							User objeto = new User(id, name, 0, null);
 							String checkOrAdd = DaoUser.addClient(objeto);
+							SendReceiveServer.send(checkOrAdd, socket);
 						}
 						
 					} else {

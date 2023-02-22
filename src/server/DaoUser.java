@@ -17,10 +17,10 @@ public class DaoUser {
 		this.listUserClients.add(usuarioDois);
 		
 	}
-	public static boolean addClient(User object) {
+	public static String addClient(User object) {
 		User confirmation = (User) search(object.getRegistration());
 		if(confirmation == null) {
-			return false;
+			return "Usuario já existe" ;
 		}else {
 			try {
 				listUserClients.add(object);
@@ -29,7 +29,7 @@ public class DaoUser {
 				e.printStackTrace();
 			}
 		}
-		return true;
+		return "Usuario cadastrado";
 		
 		
 		

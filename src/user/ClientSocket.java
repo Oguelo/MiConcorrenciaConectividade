@@ -27,14 +27,14 @@ public class ClientSocket {
 				System.out.println(
 						"--------------------------Bem vindo ao Sistema de Monitoramento de Energia--------------------------");
 				System.out.println("Digite sua matricula:"); // a matricula devera ser iniciada pela letra inicial
-																// referente ao tipo de usuario 'a'- adm, 'u' - usuario
+																// referente ao tipo de usuario 'A'- adm, 'U' - usuario
 				matriculScanner = choiceMScanner.nextLine();
 				loginNumber = checkDataLogin(matriculScanner, socket);
 
 			} while (loginNumber == null);
 
 			while (loginNumber != null) {
-				if (loginNumber.charAt(0) == 'a') {
+				if (loginNumber.charAt(0) == 'A') {
 					System.out.println("\n");
 					System.out.println("Bem vindo ao menu do Adm");
 					System.out.println("(1) - Cadastrar novo usuario");

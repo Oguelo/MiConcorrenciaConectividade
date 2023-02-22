@@ -39,11 +39,11 @@ public class ServerSoc {
 	public static String checkId(Object checkData, Socket socket) {
 		String registration = (String) checkData;
 		String check;
-		if (registration.charAt(0) == 'a') {
+		if (registration.charAt(0) == 'A') {
 			check = (String) DaoAdm.search(registration);
 			return check;
 		}
-		if (registration.charAt(0) == 's') {
+		if (registration.charAt(0) == 'U') {
 			 check = (String) DaoUser.search(registration);
 			 return check;
 		} else {
