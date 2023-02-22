@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class DaoAdm {
 		private static ArrayList<Adm> listAdmClients;
-		
+		private static String registro;
 		
 		
 		
@@ -17,14 +17,16 @@ public class DaoAdm {
 			this.listAdmClients.add(adm1);
 			
 		}
-		public static boolean  addClient(Adm object) {
-			Adm confirmation = (Adm) search(object.getRegistration());
+		public static  String addClient(Adm object) {
+			
+			String confirmation =  (String) search(object.getName());
 			if(confirmation == null) {
-				return false;
+				return "Adm já existe";
 			}else {
+				
 				listAdmClients.add(object);
 			}
-			return true;
+			return "Adm cadastrado";
 			
 			
 		}

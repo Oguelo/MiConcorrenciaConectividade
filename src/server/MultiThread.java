@@ -44,8 +44,18 @@ public class MultiThread implements Runnable {
 					}
 					if (requisition.equals("/createUser")) {
 						SendReceiveServer.send("Digite o nome do usuario:", socket);
-						String nome = (String) SendReceiveServer.receive(socket);
-
+						String name = (String) SendReceiveServer.receive(socket);
+						SendReceiveServer.send("Qual a sua função: 1 - Adm 2 - Usuario ", socket);
+						String function = (String) SendReceiveServer.receive(socket);
+						if(function == "1") {
+							Adm objeto = new Adm("", name);
+							String checkOrAdd = DaoAdm.addClient(objeto);
+							SendReceiveServer.send(checkOrAdd, socket);
+						}else {
+							User objeto = new User("", name, 0, null);
+							String checkOrAdd = DaoUser.addClient(objeto);
+						}
+						
 					} else {
 						String idString = (String) SendReceiveServer.receive(socket);
 						SendReceiveServer.send("Usuario" + idString + "foi deslogado com sucesso", socket);

@@ -144,10 +144,17 @@ public class ClientSocket {
 	}
 	public static void createUser(Socket socket) {
 		Scanner scan = new Scanner(System.in);
-		String nome;
+		String name;
+		String function;
 		SendReceive.send("/createUser", socket);
 		System.out.println(SendReceive.receive(socket));
-		SendReceive.send(nome = scan.nextLine(), socket);
+		SendReceive.send(name = scan.nextLine(), socket);
+		do {
+			System.out.println(SendReceive.receive(socket));
+			SendReceive.send(function = scan.nextLine(), socket);
+		}while((function != "1")|| (function != "2")) ;
+		System.out.println(SendReceive.receive(socket));
+		
 		
 	}	
 
