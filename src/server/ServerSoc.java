@@ -47,12 +47,27 @@ public class ServerSoc {
 			 check = (String) DaoUser.search(registration);
 			 return check;
 		} else {
-			SendReceiveServer.send("Usuario não iniciado com 'a' ou 'u'", socket);
+			SendReceiveServer.send("Usuario não iniciado com 'A' ou 'U'", socket);
 		}
 
 		return null;
 	
 	}
-	public static void createUser(Socket socket) {
+	public static void createUser(String name, String function, Socket socket) {
+		if(function == "1") {
+			String id;
+			Double createPass = ((Math.random()* 10000)+ 1);
+			id = "A" + Double.toString(createPass);
+			Adm objeto = new Adm(id, name);
+			String checkOrAdd = DaoAdm.addClient(objeto);
+			SendReceiveServer.send(checkOrAdd, socket);
+		}else {
+			String id;
+			Double createPass = ((Math.random()* 10000)+ 1);
+			id = "U" + Double.toString(createPass);
+			User objeto = new User(id, name, 0, null);
+			String checkOrAdd = DaoUser.addClient(objeto);
+			SendReceiveServer.send(checkOrAdd, socket);
+		}
 	}
 }

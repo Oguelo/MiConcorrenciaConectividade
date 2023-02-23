@@ -19,18 +19,16 @@ public class DaoUser {
 	}
 	public static String addClient(User object) {
 		User confirmation = (User) search(object.getRegistration());
-		if(confirmation == null) {
-			return "Usuario já existe" ;
+		if(confirmation != null) {
+			do{
+				object.setRegistration("U" + Double.toString((Math.random()* 10000)+ 1));
+			}while(search("U" + Double.toString((Math.random()* 10000)+ 1)) != null);
+			
+			listUserClients.add(object);
 		}else {
-			try {
-				listUserClients.add(object);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			listUserClients.add(object);
 		}
-		return "Usuario cadastrado";
-		
+		return "O id do cliente é:" + object.getRegistration();
 		
 		
 		
@@ -40,6 +38,8 @@ public class DaoUser {
 		for(User object: listUserClients) {
 			if(object.getRegistration() == registration) {
 				return object;
+			}else {
+				return null;
 			}
 		}
 		return null;

@@ -151,8 +151,9 @@ public class ClientSocket {
 		SendReceive.send(name = scan.nextLine(), socket);
 		do {
 			System.out.println(SendReceive.receive(socket));
-			SendReceive.send(function = scan.nextLine(), socket);
+			function = scan.nextLine();			
 		}while((function != "1")|| (function != "2")) ;
+		SendReceive.send(function, socket);
 		System.out.println(SendReceive.receive(socket));
 		
 		

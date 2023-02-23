@@ -19,30 +19,35 @@ public class DaoAdm {
 		}
 		public static  String addClient(Adm object) {
 			
-			String confirmation =  (String) search(object.getName());
-			if(confirmation == null) {
-				return "Adm já existe";
-			}else {
+			String confirmation =  (String) search(object.getRegistration());
+			if(confirmation != null) {
+				do{
+					object.setRegistration("A" + Double.toString((Math.random()* 10000)+ 1));
+				}while(search("A" + Double.toString((Math.random()* 10000)+ 1)) != null);
 				
 				listAdmClients.add(object);
+			}else {
+				listAdmClients.add(object);
 			}
-			return "Adm cadastrado";
+			return "O id do cliente é:" + object.getRegistration();
 			
 			
 		}
-		public static Object search(String registration) {
+		public static Object search(String registration) { // Serve para descobrir se um registro existe
 			
 			try {
 				for(Adm object: listAdmClients) {
 					if(object.getRegistration() == registration) {
 						return object;
+					}else {
+						return null;
 					}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			return null;
+			}return null;
+			
 		
 		}
 		
