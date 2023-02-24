@@ -11,8 +11,8 @@ public class DaoAdm {
 		public DaoAdm() {
 			this.listAdmClients = new ArrayList<Adm>();
 			
-			Adm adm1 = new Adm("a40028922", "Alex");
-			Adm adm2 = new Adm("a89223141", "Claudio");
+			Adm adm1 = new Adm("A40028922", "Alex");
+			Adm adm2 = new Adm("A89223141", "Claudio");
 			this.listAdmClients.add(adm2);
 			this.listAdmClients.add(adm1);
 			
@@ -37,7 +37,7 @@ public class DaoAdm {
 			
 			try {
 				for(Adm object: listAdmClients) {
-					if(object.getRegistration() == registration) {
+					if(object.getRegistration().equals(registration)) {
 						return object;
 					}else {
 						return null;

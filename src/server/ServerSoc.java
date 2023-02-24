@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ServerSoc {
-	private ArrayList<User> userList;
-	private ArrayList<Adm> admList;
-	private ArrayList<Measure> measureList;
-
+	private static DaoUser usuarios = new DaoUser();
+	private static DaoAdm adm = new DaoAdm();
 	private static boolean change = true;
 	private static int porta = 8922;
 
@@ -37,14 +35,14 @@ public class ServerSoc {
 	}
 
 	public static String checkId(Object checkData, Socket socket) {
-		String registration = (String) checkData;
-		String check;
-		if (registration.charAt(0) == 'A') {
-			check = (String) DaoAdm.search(registration);
+		
+		String check = (String) checkData;
+		if (check.charAt(0) == 'A') {
+			DaoAdm.search(check);
 			return check;
 		}
-		if (registration.charAt(0) == 'U') {
-			 check = (String) DaoUser.search(registration);
+		if (check.charAt(0) == 'U') {
+			 DaoUser.search(check);
 			 return check;
 		} else {
 			SendReceiveServer.send("Usuario não iniciado com 'A' ou 'U'", socket);

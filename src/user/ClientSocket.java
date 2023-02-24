@@ -63,7 +63,7 @@ public class ClientSocket {
 
 					}
 
-				} else {
+				} if(loginNumber.charAt(0) == 'U') {
 					System.out.println("\n");
 					System.out.println("Bem vindo ao menu do usuario");
 					System.out.println("(1) - Gerar Fatura");
@@ -83,7 +83,7 @@ public class ClientSocket {
 						loginNumber = null;
 
 					default:
-						System.out.println("Opcao nao encontrada");
+						System.out.println("Opcao nao encontrada do cliente");
 						break;
 
 					}
@@ -100,6 +100,8 @@ public class ClientSocket {
 	}
 
 	public static String checkDataLogin(String number, Socket socket) throws IOException {
+		SendReceive.send("/checkData", socket);	
+		System.out.println(SendReceive.receive(socket));
 		SendReceive.send(number, socket);
 		Object response = SendReceive.receive(socket);
 		if (response.equals("Usuario não encontrado")) {
@@ -107,12 +109,15 @@ public class ClientSocket {
 			return null;
 
 		} else {
+			System.out.println("Usuario conectado");
 			return (String) response;
 		}
 
 	}
 
 	private static void exitSystem(String loginNumber, Socket socket) throws IOException {
+		
+		SendReceive.send("/exitSystem", socket);
 		SendReceive.send(loginNumber, socket);
 		System.out.println(SendReceive.receive(socket));
 
