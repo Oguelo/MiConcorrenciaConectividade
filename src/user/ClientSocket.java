@@ -18,7 +18,7 @@ public class ClientSocket {
 	public static void telaLogin() throws ClassNotFoundException {
 		Scanner choiceMScanner = new Scanner(System.in);
 		try {
-			Socket socket = new Socket("localhost", porta); // conecta ao servidor
+			Socket socket = new Socket("127.0.0.1", porta); // conecta ao servidor
 			System.out.println("Conexão estabelecida com o servidor.");
 			String matriculScanner;
 			String loginNumber;
