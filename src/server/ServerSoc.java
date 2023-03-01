@@ -21,10 +21,10 @@ public class ServerSoc {
 			System.out.println("Porta 8922 aberta!");
 
 			while (change == true) {
-				Socket client = server.accept();
-				MultiThread thread = new MultiThread(client);
+				Socket monitor = server.accept();
+				MultiThread thread = new MultiThread(monitor);
 				new Thread(thread).start();
-				System.out.println("Nova conexão com o cliente " + client.getInetAddress().getHostAddress());
+				System.out.println("Nova conexão com o monitore " + monitor.getInetAddress().getHostAddress());
 
 			}
 		} catch (IOException e) {
@@ -51,21 +51,23 @@ public class ServerSoc {
 		return null;
 	
 	}
-	public static void createUser(String name, String function, Socket socket) {
-		if(function == "1") {
+	public static String createUser(String name, String function) {
+		if(function.equals("adm") ) {
 			String id;
 			Double createPass = ((Math.random()* 10000)+ 1);
 			id = "A" + Double.toString(createPass);
 			Adm objeto = new Adm(id, name);
 			String checkOrAdd = DaoAdm.addClient(objeto);
-			SendReceiveServer.send(checkOrAdd, socket);
-		}else {
+			return checkOrAdd;
+		}else if (function.equals("user")){
 			String id;
 			Double createPass = ((Math.random()* 10000)+ 1);
 			id = "U" + Double.toString(createPass);
 			User objeto = new User(id, name, 0, null);
 			String checkOrAdd = DaoUser.addClient(objeto);
-			SendReceiveServer.send(checkOrAdd, socket);
+			return checkOrAdd;
 		}
+		return null;
+		
 	}
 }

@@ -53,7 +53,6 @@ public class MultiThread implements Runnable {
 							String name = (String) SendReceiveServer.receive(socket);
 							SendReceiveServer.send("Qual a sua função: 1 - Adm 2 - Usuario ", socket);
 							String function = (String) SendReceiveServer.receive(socket);
-							ServerSoc.createUser(name, function, socket);
 							
 							
 						}if(requisition.equals("/exitSystem")) {

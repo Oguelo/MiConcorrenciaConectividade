@@ -20,6 +20,7 @@ public class ServerHttp {
 		server.createContext("/", new MyHandler());
 		server.setExecutor(null); //
 		server.start();
+
 	}
 
 	static class MyHandler implements HttpHandler {
@@ -31,14 +32,13 @@ public class ServerHttp {
 				if (endpoint.equals("/createuser")) {
 					try {
 						String body = requestBodyRead(exchange);
-
+						String requestBody = requestBodyRead(exchange);
+						createUser(exchange, requestBody);
 						// Analisar o corpo da solicitação JSON
-						JSONObject jsonObject = new JSONObject(body);
-						String name = jsonObject.getString("name");
 
 						// Criar a resposta com base no corpo da solicitação
 						JSONObject responseObject = new JSONObject();
-						responseObject.put("message", "Olá " + name + "!");
+						// responseObject.put("message", "Olá " + name + "!");
 
 						// Enviar a resposta
 						String response = responseObject.toString();
@@ -51,11 +51,20 @@ public class ServerHttp {
 						e.printStackTrace();
 
 					}
-				}else if(endpoint.equals("/conectsystem"))
+				} else if (endpoint.equals("/conectsystem")) {
+
+				}
 			}
 			if (requestMethod.equalsIgnoreCase("GET")) {
 				try {
-					String body = requestBodyRead(exchange);
+					JSONObject responseObject = new JSONObject();
+					responseObject.put("message", "Olá " + "!");
+					String response = responseObject.toString();
+					exchange.sendResponseHeaders(200, response.length());
+					OutputStream os = exchange.getResponseBody();
+					os.write(response.getBytes());
+					os.close();
+					// String body = requestBodyRead(exchange);
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -85,7 +94,7 @@ public class ServerHttp {
 		}
 	}
 
-	public static String requestBodyRead(HttpExchange exchange) throws IOException {
+	private static String requestBodyRead(HttpExchange exchange) throws IOException {
 		InputStream in = exchange.getRequestBody();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		byte[] bufferPost = new byte[1024];
@@ -94,5 +103,41 @@ public class ServerHttp {
 			out.write(bufferPost, 0, length);
 		}
 		return out.toString("UTF-8");
+	}
+
+	
+	
+	
+	
+	
+	private static void returnCode(HttpExchange exchange, int status, String message) throws IOException {
+		exchange.sendResponseHeaders(status, message.length());
+		OutputStream responseBody = exchange.getResponseBody();
+		responseBody.write(message.getBytes());
+		responseBody.close();
+	}
+
+	
+	
+	
+	
+	
+	
+	private static void createUser(HttpExchange exchange, String requestBody) throws IOException {
+		// Analisar o corpo da solicitação JSON
+		JSONObject jsonObject = new JSONObject(requestBody);
+		String type = jsonObject.getString("type");
+		String name = jsonObject.getString("name");
+
+		// Executar a lógica de negócios
+		String message = ServerSoc.createUser(name, type);
+
+		// Enviar a resposta apropriada com base na lógica de negócios
+		if (message == null) {
+			returnCode(exchange, Status.BAD_REQUEST, "Dados incorretos");
+		} else {
+			returnCode(exchange, Status.CREATED, message);
+		}
+
 	}
 }
