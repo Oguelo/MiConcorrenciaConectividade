@@ -34,7 +34,7 @@ public class ServerSoc {
 		       String id = (String) SendReceiveServer.receive(socket);
 		       double valorConsumido = (double) SendReceiveServer.receive(socket);
 		       String retorno = DaoUser.addMeasure(id, valorConsumido);
-		        
+		       
 
 		        // Loop infinito para receber dados do socket
 		        

@@ -69,8 +69,10 @@ public class DaoUser {
 		for(Measure object : listUserContas) {
 			if(object.getRegistration().equals(userId)) {
 				object.setSummedConsumption(object.getSummedConsumption() + initialValue);
-				object.setCurrentConsumption(initialValue);
+				
+				
 				return"OK";
+				
 			}else {
 				return "ID nao encontrado Measure";
 			}
