@@ -1,11 +1,16 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import gauge.UserEnergyGaugeThread;
 
 public class ServerSoc {
 	private static DaoUser usuarios = new DaoUser();
@@ -13,25 +18,33 @@ public class ServerSoc {
 	private static boolean change = true;
 	private static int porta = 8922;
 
+
 	public static void main(String[] args) throws IOException {
-
-		ServerSocket server = null;
+	
+		ServerSocket server = new ServerSocket(porta);
+		
 		try {
-			server = new ServerSocket(porta);
-			System.out.println("Porta 8922 aberta!");
+		    System.out.println("Porta " + porta + " aberta!");
 
-			while (change == true) {
-				Socket monitor = server.accept();
-				MultiThread thread = new MultiThread(monitor);
-				new Thread(thread).start();
-				System.out.println("Nova conexão com o monitore " + monitor.getInetAddress().getHostAddress());
+		    while (change) {
+		        Socket socket = server.accept();
+		        System.out.println("Nova conexão com " + socket.getInetAddress().getHostAddress());
 
-			}
+		        // Cria um ObjectInputStream para receber os dados do socket
+		       String id = (String) SendReceiveServer.receive(socket);
+		       double valorConsumido = (double) SendReceiveServer.receive(socket);
+		       String retorno = DaoUser.addMeasure(id, valorConsumido);
+		        
+
+		        // Loop infinito para receber dados do socket
+		        
+		    }
 		} catch (IOException e) {
-			e.printStackTrace();
+		    e.printStackTrace();
 		} finally {
-			server.close();
+		    server.close();
 		}
+
 	}
 
 	public static String checkId(Object checkData, Socket socket) {
@@ -63,11 +76,15 @@ public class ServerSoc {
 			String id;
 			Double createPass = ((Math.random()* 10000)+ 1);
 			id = "U" + Double.toString(createPass);
-			User objeto = new User(id, name, 0, null);
+			User objeto = new User(id, name);
 			String checkOrAdd = DaoUser.addClient(objeto);
 			return checkOrAdd;
 		}
 		return null;
 		
 	}
+	
+		
+		
+	
 }

@@ -4,15 +4,28 @@ import java.util.ArrayList;
 
 public class DaoUser {
 	private static ArrayList<User> listUserClients;
+	private static ArrayList<Measure> listUserContas;
 
 	public DaoUser() {
 		DaoUser.listUserClients = new ArrayList<User>();
 
-		User usuarioUm = new User("U40028922", "Alex", 0, null);
-		User usuarioDois = new User("U3322424", "jorge", 0, null);
+		User usuarioUm = new User("U40028922", "Alex");
+		User usuarioDois = new User("U3322424", "jorge");
+		Measure usuarioUmConta = new Measure("U40028922", "Alex", 100, 0, null,false);
+		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 100, 0, null,false);
 		DaoUser.listUserClients.add(usuarioUm);
 		DaoUser.listUserClients.add(usuarioDois);
+		DaoUser.listUserContas.add(usuarioUmConta);
+		DaoUser.listUserContas.add(usuarioDoisConta);
 
+	}
+
+	public static ArrayList<Measure> getListUserContas() {
+		return listUserContas;
+	}
+
+	public static void setListUserContas(ArrayList<Measure> listUserContas) {
+		DaoUser.listUserContas = listUserContas;
 	}
 
 	public static ArrayList<User> getListUserClients() {
@@ -34,7 +47,7 @@ public class DaoUser {
 		} else {
 			listUserClients.add(object);
 		}
-		return "O id do cliente é:" + object.getRegistration();
+		return object.getRegistration();
 
 	}
 
@@ -50,5 +63,24 @@ public class DaoUser {
 		return null;
 
 	}
+
+	public static String addMeasure(String userId, double initialValue) {
+		
+		for(Measure object : listUserContas) {
+			if(object.getRegistration().equals(userId)) {
+				object.setSummedConsumption(object.getSummedConsumption() + initialValue);
+				object.setCurrentConsumption(initialValue);
+				return"OK";
+			}else {
+				return "ID nao encontrado Measure";
+			}
+		}
+		return null;
+		
+		
+		
+	}
+
+
 
 }
