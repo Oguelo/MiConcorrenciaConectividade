@@ -13,8 +13,7 @@ import java.util.Scanner;
 import gauge.UserEnergyGaugeThread;
 
 public class ServerSoc {
-	private static DaoUser usuarios = new DaoUser();
-	private static DaoAdm adm = new DaoAdm();
+	
 	private static boolean change = true;
 	private static int porta = 8922;
 

@@ -8,11 +8,11 @@ public class DaoUser {
 
 	public DaoUser() {
 		DaoUser.listUserClients = new ArrayList<User>();
-
+		DaoUser.listUserContas = new ArrayList<Measure>();
 		User usuarioUm = new User("U40028922", "Alex");
 		User usuarioDois = new User("U3322424", "jorge");
-		Measure usuarioUmConta = new Measure("U40028922", "Alex", 100, 0, null,false);
-		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 100, 0, null,false);
+		Measure usuarioUmConta = new Measure("U40028922", "Alex", 100, 0, false);
+		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 100, 0, false);
 		DaoUser.listUserClients.add(usuarioUm);
 		DaoUser.listUserClients.add(usuarioDois);
 		DaoUser.listUserContas.add(usuarioUmConta);

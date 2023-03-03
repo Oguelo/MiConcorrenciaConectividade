@@ -1,47 +1,52 @@
 package gauge;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import server.DaoAdm;
-import server.DaoUser;
-//essa classe servira para aplicar as medições e enviar os dados de consumo 
+import java.net.Socket;
 
 public class UserEnergyGaugeThread implements Runnable {
-	private Socket socket;
-	
+    private Socket socket;
 
-	@Override
-	public void run() {
-		String userId = "U40028922";
-		double initialValue = 0;
-		double gauge = 10.0;
-		boolean onMed = true;
-		Socket socket = null;
-		while (onMed) {
-			initialValue += gauge;
-			try {
-				socket = new Socket("127.0.0.1", 8922);
-				MedidaConsumo medida = new MedidaConsumo(userId, initialValue);
-				SendReceiveGauge.send(medida, socket);
+    @Override
+    public void run() {
+        String userId = "U40028922";
+        double initialValue = 0;
+        double gauge = 10.0;
+        boolean onMed = true;
+        while (onMed) {
+            try {
+                if (socket == null || socket.isClosed() || !socket.isConnected()) {
+                    socket = new Socket("127.0.0.1", 8922);
+                }
 
-				Thread.sleep(60000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
+                initialValue += gauge;
+                MedidaConsumo medida = new MedidaConsumo(userId, initialValue);
+                SendReceiveGauge.send(medida, socket);
+
+                Thread.sleep(60000);
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Caso haja uma exceção, tente se reconectar em 5 minutos
+                try {
+                    Thread.sleep(300000);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (socket != null && !socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
 			
 			
 			
@@ -68,11 +73,6 @@ public class UserEnergyGaugeThread implements Runnable {
 			 * 
 			 * } catch (InterruptedException e) { e.printStackTrace(); }
 			 */
-
-		}
-
-	}
-}
 
 /*
  * private static DaoUser usuarios = new DaoUser(); private static DaoAdm adm =
