@@ -2,26 +2,61 @@ package gauge;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class UserEnergyGaugeThread implements Runnable {
     private Socket socket;
-
+    private static double gauge = 10.0;
+    public static void main(String[] args) {
+    	boolean on = true;
+    	
+    	Scanner scanner = new Scanner(System.in);
+    	
+    	while(on) {
+    		System.out.println("O valor atual do medidor é:" + gauge);
+    		System.out.print("Digite o novo valor que deseja(ou n para sair) :");
+    		String input = scanner.nextLine();
+    		if(input.equalsIgnoreCase("n")) {
+    			on = false;
+    			
+    			
+    		}else {
+    			try {
+    				
+    				double newData = Double.parseDouble(input);
+    				gauge = newData;
+    				System.out.println("O valor do medidor foi alterado para:" + gauge);
+    				
+    				
+    			}catch(NumberFormatException e){
+    				System.out.println("Entrada invalida, Digite novamente:");
+    				
+    			}
+    		}
+    		
+    		
+    		
+    	}scanner.close();
+    	
+    	
+    	
+    }
     @Override
     public void run() {
         String userId = "U40028922";
-        double initialValue = 0;
-        double gauge = 10.0;
+        double bandeira = 0;
+       
         boolean onMed = true;
         while (onMed) {
             try {
                 if (socket == null || socket.isClosed() || !socket.isConnected()) {
                     socket = new Socket("127.0.0.1", 8922);
                 }
-
-                initialValue += gauge;
-                MedidaConsumo medida = new MedidaConsumo(userId, initialValue);
+                
+               
+                MedidaConsumo medida = new MedidaConsumo(userId, gauge);
                 SendReceiveGauge.send(medida, socket);
-
+                socket.close();
                 Thread.sleep(60000);
             } catch (IOException e) {
                 e.printStackTrace();
