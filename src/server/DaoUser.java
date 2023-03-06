@@ -63,7 +63,7 @@ public class DaoUser {
 		return null;
 	}
 
-	public static Object searchMeasure(String registration) {
+	public static Measure searchMeasure(String registration) {
 		for (Measure object : listUserContas) {
 			if (object.getRegistration().equals(registration)) {
 				return object;
@@ -96,18 +96,19 @@ public class DaoUser {
 		return 404;
 	}
 
-	public static String generateHistoric(String userId) {
-		Measure historic = (Measure) searchMeasure(userId);
+	public static Measure generateHistoric(String userId) {
+		Measure historic = searchMeasure(userId);
 		if (historic == null) {
-			return "404";
+			return null;
 		}else {
-			StringBuilder stringList = new StringBuilder();
-			for(String num : historic.getHistoricListData()) {
-				stringList.append(num).append("\n");
-			}
-			stringList.append("Soma Total de Consumo:" +historic.getSummedConsumption());
-			String retornoLista = stringList.toString();
-			return retornoLista;
+			
+			/*
+			 * StringBuilder stringList = new StringBuilder(); for(String num :
+			 * historic.getHistoricListData()) { stringList.append(num).append("\n"); }
+			 * stringList.append("Soma Total de Consumo:" +historic.getSummedConsumption());
+			 * String retornoLista = stringList.toString();
+			 */
+			return historic;
 		}
 
 	}

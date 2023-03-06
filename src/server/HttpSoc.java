@@ -53,15 +53,24 @@ public class HttpSoc {
 			bodyJson += (char) in.read();
 		}
 		JSONObject jsonBody = new JSONObject(bodyJson);
-		String historic = DaoUser.generateHistoric(jsonBody.getString("id"));
-		JSONObject answer = new JSONObject();
-		answer.put("Historic", historic);
-		out.println("HTTP/1.1 200 OK");
-		out.println("Content-Type: text/plain");
-		out.println("Content-Length: " + answer.length());
-		out.println();
-		out.println(answer);
-		out.flush();
+		String id = jsonBody.getString("id");
+		Measure historic = DaoUser.searchMeasure(id);
+		if(historic == null) {
+			codeReturn(out, 404, Status.getMessage(404));
+		}else {
+			JSONObject answer = new JSONObject();
+			answer.put("Id", id);
+			answer.put("HistoricList", historic.getHistoricListData());
+			answer.put("ConsumoTotal", historic.getSummedConsumption());
+			out.print("HTTP/1.1 200 OK\r\n");
+			out.print("Content-Type: application/json\r\n");
+			out.print("Content-Length: " + answer.toString().length() + "\r\n");
+			out.print("\r\n");
+			out.print(answer.toString());
+			out.flush();
+
+		}
+		
 	}
 
 	private static void addMeasure(BufferedReader in, PrintWriter out) throws IOException {
@@ -73,9 +82,9 @@ public class HttpSoc {
 		String id = jsonBody.getString("id");
 		double measure = jsonBody.getDouble("gauge");
 		String dataHora = jsonBody.getString("DataHora");
-		int answer = DaoUser.addMeasure(id, measure, dataHora);
-		String status = Status.getMessage(answer);
-		codeReturn(out, answer, status);
+		int response = DaoUser.addMeasure(id, measure, dataHora);
+		String status = Status.getMessage(response);
+		codeReturn(out, response, status);
 	}
 
 	
@@ -91,8 +100,8 @@ public class HttpSoc {
 		
 
 	}
-	private static void codeReturn(PrintWriter out, int answer, String status) {
-		out.println("HTTP/1.1 " + answer + " " + status);
+	private static void codeReturn(PrintWriter out, int i, String status) {
+		out.println("HTTP/1.1 " + i + " " + status);
 		out.println("Content-Type: application/json");
 		out.println();
 		out.println("{ \"message\": \"" + status + "\" }");
