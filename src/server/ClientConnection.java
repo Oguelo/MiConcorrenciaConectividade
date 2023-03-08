@@ -34,12 +34,7 @@ public class ClientConnection implements Runnable {
 				if (parts.length == 3 && parts[1].equals("generateinvoice")) {
 					String id = parts[2];
 					generateInvoice(in, out,id);					
-					String status = "ok";
-					System.out.print("passou por aqui 2");
-					out.println("HTTP/1.1 200 OK");
-					out.println("Content-Type: application/json");
-					out.println();
-					out.println("{ \"message\": \"" + status + "\" }");
+					
 
 				} else if (parts.length == 3 && parts[1].equals("viewhistory")) {
 					String id = parts[2];
@@ -66,15 +61,14 @@ public class ClientConnection implements Runnable {
 		if (historic == null) {
 			codeReturn(out, 404, Status.getMessage(404));
 		} else {
-			JSONObject answer = new JSONObject();
-			answer.put("Id", id);
-			answer.put("HistoricList", historic.getHistoricListData());
-			answer.put("ConsumoTotal", historic.getSummedConsumption());
+			String answer = ("ID:"+ id +"/n");
+			answer += ("Historico:" + historic.getHistoricListData()+ "/n");
+			answer += ("Consumo Total" + historic.getSummedConsumption() +"/n");
 			out.print("HTTP/1.1 200 OK\r\n");
-			out.print("Content-Type: application/json\r\n");
-			out.print("Content-Length: " + answer.toString().length() + "\r\n");
+			out.print("Content-Type: text/plain \r\n");
+			out.print("Content-Length: " + answer.length() + "\r\n");
 			out.print("\r\n");
-			out.print(answer.toString());
+			out.print(answer);
 			out.flush();
 
 		}
@@ -94,11 +88,11 @@ public class ClientConnection implements Runnable {
 			codeReturn(out, 404, Status.getMessage(404));
 			
 		}else {
-			JSONObject answer = new JSONObject();
-			answer.put("Id", id);
-			answer.put("HistoricList", invoice.getHistoricListData());
-			answer.put("ConsumoTotal", invoice.getSummedConsumption());
-			answer.put("ValorTotal", invoice.getValorFatura());
+			String answer = ("ID:"+ id +"/n");
+		answer += ("Historico:" + invoice.getHistoricListData()+ "/n");
+		answer += ("Consumo Total" + invoice.getSummedConsumption()+ "/n");
+		answer +=("Valor da Fatura:" + invoice.getValorFatura());
+			
 			out.print("HTTP/1.1 200 OK\r\n");
 			out.print("Content-Type: application/json\r\n");
 			out.print("Content-Length: " + answer.toString().length() + "\r\n");

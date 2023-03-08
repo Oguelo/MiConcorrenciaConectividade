@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-import org.json.JSONObject;
-
 public class UserEnergyGaugeThread implements Runnable {
 	private static String matriculScanner;
 
