@@ -1,8 +1,14 @@
 package gauge;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
+import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -11,26 +17,35 @@ import java.util.Scanner;
 import org.json.JSONObject;
 
 public class UserEnergyGaugeThread implements Runnable {
-	private static double gauge = 10.0;
+	private static String matriculScanner;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		CounterUpdater updater = new CounterUpdater();
+		Thread updaterThread = new Thread(updater);
+		updaterThread.start();
 		boolean on = true;
 
 		Scanner scanner = new Scanner(System.in);
 
+		System.out.println("Digite o numero de matricula deste Servidor:");
+		matriculScanner = scanner.nextLine();
+
 		while (on) {
-			System.out.println("O valor atual do medidor é:" + gauge);
+			System.out.println("O valor atual do medidor é:" + updater.getEdition());
 			System.out.print("Digite o novo valor que deseja(ou n para sair) :");
 			String input = scanner.nextLine();
 			if (input.equalsIgnoreCase("n")) {
 				on = false;
+				Thread.sleep(60 * 1000);
+				updater.stop();
+				updaterThread.join();
 
 			} else {
 				try {
 
-					double newData = Double.parseDouble(input);
-					gauge = newData;
-					System.out.println("O valor do medidor foi alterado para:" + gauge);
+					updater.setEdition(Double.parseDouble(input));
+
+					System.out.println("O valor do medidor foi alterado para:" + input);
 
 				} catch (NumberFormatException e) {
 					System.out.println("Entrada invalida, Digite novamente:");
@@ -45,46 +60,48 @@ public class UserEnergyGaugeThread implements Runnable {
 
 	@Override
 	public void run() {
-		String userId = "U40028922";
+	    boolean onMed = true;
+	    CounterUpdater updater = new CounterUpdater();
+	    while (onMed) {
+	        
+	        try {
+	            double gaugeValue = updater.getGauge();
+	            
+	            // Cria um socket cliente e se conecta ao servidor
+	            Socket socket = new Socket("localhost", 8922);
+	            OutputStream output = socket.getOutputStream();
+	            PrintWriter writer = new PrintWriter(output, true);
 
-		boolean onMed = true;
-		while (onMed) {
+	            // Constrói uma string com os dados da medição
+	            LocalDateTime now = LocalDateTime.now();
+	            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+	            String dataHora = now.format(formatter);
+	            String medicao = matriculScanner + "," + gaugeValue + "," + dataHora;
 
-			try {
-				// Cria uma nova conexão HTTP POST
-				URL url = new URL("http://localhost:8922/gauge");
-				HttpURLConnection requisition = (HttpURLConnection) url.openConnection();
-				requisition.setRequestMethod("POST");
-				requisition.setRequestProperty("Content-Type", "application/json");
-				requisition.setDoOutput(true);
-				LocalDateTime now = LocalDateTime.now(); // pega a data e hora atual
-		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"); // define o formato da data e hora
-		        String dataHora = now.format(formatter); 
-				// Escreve o corpo da requisição JSON no OutputStream da conexão
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("id", userId);
-				jsonObject.put("gauge",gauge);
-				jsonObject.put("DataHora", dataHora);
-			
+	            // Envia a string para o servidor
+	            writer.println(medicao);
+	            //recebe resposta
+	            InputStream inputStream = socket.getInputStream();
+	            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+	            String response = reader.readLine();
+	            System.out.println("Resposta do servidor: " + response);
 
-				String jsonBody = jsonObject.toString();
-				OutputStreamWriter writer = new OutputStreamWriter(requisition.getOutputStream(), "UTF-8");
-				writer.write(jsonBody);
-				writer.close();
+	     
+	            // Fecha o socket
+	            writer.close();
+	            output.close();
+	            socket.close();
 
-				int codeReturn = requisition.getResponseCode();
-				System.out.println("retorno: " + codeReturn);
-
-				requisition.disconnect();
-				Thread.sleep(100000);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	            updater.setGauge(0);
+	            Thread.sleep(60000);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
+
 }
 
 /*

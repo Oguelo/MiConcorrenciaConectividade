@@ -12,8 +12,8 @@ public class DaoUser {
 		DaoUser.listUserContas = new ArrayList<Measure>();
 		User usuarioUm = new User("U40028922", "Alex");
 		User usuarioDois = new User("U3322424", "jorge");
-		Measure usuarioUmConta = new Measure("U40028922", "Alex", 0, false, null, null);
-		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 0, false, null, null);
+		Measure usuarioUmConta = new Measure("U40028922", "Alex", 0, false, 0, null, null);
+		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 0, false, 0, null, null);
 		DaoUser.listUserClients.add(usuarioUm);
 		DaoUser.listUserClients.add(usuarioDois);
 		DaoUser.listUserContas.add(usuarioUmConta);
@@ -84,11 +84,13 @@ public class DaoUser {
 					object.setoverconsumption(false);
 				}
 				object.setSummedConsumption(object.getSummedConsumption() + initialValue); // setar o valor total
+				double valor = initialValue * 0.50;
+				object.setValorFatura(object.getValorFatura() + valor);
 				ArrayList<Double> listaNova = object.getHistoriclList();// pegar a lista de valores em double para usar caso necessario e salvar novamente com os novos valores 
 				ArrayList<String> listaNovaHistoric = object.getHistoricListData();
 				listaNova.add(initialValue);
 				object.setHistoricList(listaNova);
-				listaNovaHistoric.add("Data/Hora:" + dataHour + "-" +Double.toString(initialValue));
+				listaNovaHistoric.add("Data/Hora:" + dataHour + " - " +"Medição em kwH:" + initialValue + " - " + "valor unitario" + valor);
 				object.setHistoricListData(listaNovaHistoric);
 				return 200;
 			}
