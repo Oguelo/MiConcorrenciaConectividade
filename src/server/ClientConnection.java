@@ -33,6 +33,7 @@ public class ClientConnection implements Runnable {
 				System.out.println("passou por aqui 1");
 				if (parts.length == 3 && parts[1].equals("generateinvoice")) {
 					String id = parts[2];
+					generateInvoice(in, out,id);					
 					String status = "ok";
 					System.out.print("passou por aqui 2");
 					out.println("HTTP/1.1 200 OK");
@@ -87,13 +88,25 @@ public class ClientConnection implements Runnable {
 		codeReturn(out, response, status);
 	}
 
-	private static void generateInvoice(BufferedReader in, PrintWriter out) throws IOException {
-		String bodyJson = "";
-		while (in.ready()) {
-			bodyJson += (char) in.read();
+	private static void generateInvoice(BufferedReader in, PrintWriter out, String id) throws IOException {
+		Measure invoice = DaoUser.searchMeasure(id);
+		if(invoice == null) {
+			codeReturn(out, 404, Status.getMessage(404));
+			
+		}else {
+			JSONObject answer = new JSONObject();
+			answer.put("Id", id);
+			answer.put("HistoricList", invoice.getHistoricListData());
+			answer.put("ConsumoTotal", invoice.getSummedConsumption());
+			answer.put("ValorTotal", invoice.getValorFatura());
+			out.print("HTTP/1.1 200 OK\r\n");
+			out.print("Content-Type: application/json\r\n");
+			out.print("Content-Length: " + answer.toString().length() + "\r\n");
+			out.print("\r\n");
+			out.print(answer.toString());
+			out.flush();
+			invoice.setValorFatura(0);
 		}
-		JSONObject jsonBody = new JSONObject(bodyJson);
-		String id = jsonBody.getString("id");
 
 	}
 
