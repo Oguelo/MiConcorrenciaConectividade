@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class HttpSoc {
 	public static void main(String[] args) throws IOException {
-		DaoUser dao = new DaoUser();
+	
 		int port = 8922;
 		boolean on = true;
 		ServerSocket serverSocket = new ServerSocket(port);

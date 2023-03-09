@@ -17,8 +17,9 @@ public class ClientConnection implements Runnable {
 
 	@Override
 	public void run() {
+		DaoUser dao = new DaoUser();
 		try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 			String inputLine;
 			StringBuilder request = new StringBuilder();
 			while ((inputLine = in.readLine()) != null && !inputLine.isEmpty()) {
@@ -33,8 +34,7 @@ public class ClientConnection implements Runnable {
 				System.out.println("passou por aqui 1");
 				if (parts.length == 3 && parts[1].equals("generateinvoice")) {
 					String id = parts[2];
-					generateInvoice(in, out,id);					
-					
+					generateInvoice(in, out, id);
 
 				} else if (parts.length == 3 && parts[1].equals("viewhistory")) {
 					String id = parts[2];
@@ -42,13 +42,13 @@ public class ClientConnection implements Runnable {
 
 				}
 			} else {
-				 String medicao = in.readLine();
-				    // Dividir a string em seus componentes
-				    String[] partes = medicao.split(",");
-				    String matricula = partes[0];
-				    double gaugeValue = Double.parseDouble(partes[1]);
-				    String dataHora = partes[2];
-				    addMeasure(in, out, matricula, gaugeValue, dataHora);
+				String medicao = in.readLine();
+				// Dividir a string em seus componentes
+				String[] partes = medicao.split(",");
+				String matricula = partes[0];
+				double gaugeValue = Double.parseDouble(partes[1]);
+				String dataHora = partes[2];
+				addMeasure(in, out, matricula, gaugeValue, dataHora);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -61,9 +61,9 @@ public class ClientConnection implements Runnable {
 		if (historic == null) {
 			codeReturn(out, 404, Status.getMessage(404));
 		} else {
-			String answer = ("ID:"+ id +"/n");
-			answer += ("Historico:" + historic.getHistoricListData()+ "/n");
-			answer += ("Consumo Total" + historic.getSummedConsumption() +"/n");
+			String answer = ("ID:" + id + "/n");
+			answer += ("Historico:" + historic.getHistoricListData() + "/n");
+			answer += ("Consumo Total" + historic.getSummedConsumption() + "/n");
 			out.print("HTTP/1.1 200 OK\r\n");
 			out.print("Content-Type: text/plain \r\n");
 			out.print("Content-Length: " + answer.length() + "\r\n");
@@ -84,20 +84,20 @@ public class ClientConnection implements Runnable {
 
 	private static void generateInvoice(BufferedReader in, PrintWriter out, String id) throws IOException {
 		Measure invoice = DaoUser.searchMeasure(id);
-		if(invoice == null) {
+		if (invoice == null) {
 			codeReturn(out, 404, Status.getMessage(404));
-			
-		}else {
-			String answer = ("ID:"+ id +"/n");
-		answer += ("Historico:" + invoice.getHistoricListData()+ "/n");
-		answer += ("Consumo Total" + invoice.getSummedConsumption()+ "/n");
-		answer +=("Valor da Fatura:" + invoice.getValorFatura());
-			
+
+		} else {
+			String answer = ("ID:" + id + "/n");
+			answer += ("Historico:" + invoice.getHistoricListData() + "/n");
+			answer += ("Consumo Total" + invoice.getSummedConsumption() + "/n");
+			answer += ("Valor da Fatura:" + invoice.getValorFatura() + "/n");
+
 			out.print("HTTP/1.1 200 OK\r\n");
-			out.print("Content-Type: application/json\r\n");
-			out.print("Content-Length: " + answer.toString().length() + "\r\n");
+			out.print("Content-Type:text/plain\r\n");
+			out.print("Content-Length: " + answer.length() + "\r\n");
 			out.print("\r\n");
-			out.print(answer.toString());
+			out.print(answer);
 			out.flush();
 			invoice.setValorFatura(0);
 		}
@@ -106,9 +106,10 @@ public class ClientConnection implements Runnable {
 
 	private static void codeReturn(PrintWriter out, int i, String status) {
 		out.println("HTTP/1.1 " + i + " " + status);
-		out.println("Content-Type: application/json");
+		out.println("Content-Type:text/plain");
 		out.println();
-		out.println("{ \"message\": \"" + status + "\" }");
+		out.println("Mensagem:" + status);
+		out.flush();
 	}
 
 }
