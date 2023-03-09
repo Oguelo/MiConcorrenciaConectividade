@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
+// criar servidor Datagram socket e criar outro servidor numa porta diferente para receber os dados dos medidores 
 public class UserEnergyGaugeThread implements Runnable {
 	private static String matriculScanner;
 

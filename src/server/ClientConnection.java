@@ -1,5 +1,6 @@
 package server;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,12 +19,16 @@ public class ClientConnection implements Runnable {
 	@Override
 	public void run() {
 		DaoUser dao = new DaoUser();
-		try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		try (BufferedInputStream in = new BufferedInputStream(clientSocket.getInputStream());
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
-			String inputLine;
 			StringBuilder request = new StringBuilder();
-			while ((inputLine = in.readLine()) != null && !inputLine.isEmpty()) {
-				request.append(inputLine).append("\r\n");
+					
+			
+					
+			while(in.available() > 0) {
+				
+				request.append((char)in.read());
+				
 			}
 			System.out.println("Received request:\n" + request.toString());
 			String[] endpoint = request.toString().split(" ");
@@ -42,7 +47,8 @@ public class ClientConnection implements Runnable {
 
 				}
 			} else {
-				String medicao = in.readLine();
+				// vai deixar de existir quando eu fizer o UDP para o servidor e medidor
+				String medicao = in.read();
 				// Dividir a string em seus componentes
 				String[] partes = medicao.split(",");
 				String matricula = partes[0];
@@ -56,59 +62,48 @@ public class ClientConnection implements Runnable {
 
 	}
 
-	private static void viewHistory(BufferedReader in, PrintWriter out, String id) throws IOException {
+	private static void viewHistory(BufferedInputStream in, PrintWriter out, String id) throws IOException {
 		Measure historic = DaoUser.searchMeasure(id);
 		if (historic == null) {
-			codeReturn(out, 404, Status.getMessage(404));
+			codeReturn(out, 404, Status.getMessage(404), Status.getMessage(404));
 		} else {
-			String answer = ("ID:" + id + "/n");
-			answer += ("Historico:" + historic.getHistoricListData() + "/n");
-			answer += ("Consumo Total" + historic.getSummedConsumption() + "/n");
-			out.print("HTTP/1.1 200 OK\r\n");
-			out.print("Content-Type: text/plain \r\n");
-			out.print("Content-Length: " + answer.length() + "\r\n");
-			out.print("\r\n");
-			out.print(answer);
-			out.flush();
+			String answer = ("ID:" + id + "\n");
+			answer += ("Historico:" + historic.getHistoricListData() + "\n");
+			answer += ("Consumo Total" + historic.getSummedConsumption() + "\n");
+			codeReturn(out, 200, Status.getMessage(200), answer);
 
 		}
 
 	}
 
-	private static void addMeasure(BufferedReader in, PrintWriter out, String matricula, double gaugeValue,
+	private static void addMeasure(BufferedInputStream in, PrintWriter out, String matricula, double gaugeValue,
 			String dataHora) throws IOException {
 		int response = DaoUser.addMeasure(matricula, gaugeValue, dataHora);
 		String status = Status.getMessage(response);
-		codeReturn(out, response, status);
 	}
 
-	private static void generateInvoice(BufferedReader in, PrintWriter out, String id) throws IOException {
+	private static void generateInvoice(BufferedInputStream in, PrintWriter out, String id) throws IOException {
 		Measure invoice = DaoUser.searchMeasure(id);
 		if (invoice == null) {
-			codeReturn(out, 404, Status.getMessage(404));
+			codeReturn(out, 404, Status.getMessage(404), Status.getMessage(404));
 
 		} else {
 			String answer = ("ID:" + id + "/n");
-			answer += ("Historico:" + invoice.getHistoricListData() + "/n");
-			answer += ("Consumo Total" + invoice.getSummedConsumption() + "/n");
-			answer += ("Valor da Fatura:" + invoice.getValorFatura() + "/n");
-
-			out.print("HTTP/1.1 200 OK\r\n");
-			out.print("Content-Type:text/plain\r\n");
-			out.print("Content-Length: " + answer.length() + "\r\n");
-			out.print("\r\n");
-			out.print(answer);
-			out.flush();
+			answer += ("Historico:" + invoice.getHistoricListData() + "\n");
+			answer += ("Consumo Total" + invoice.getSummedConsumption() + "\n");
+			answer += ("Valor da Fatura:" + invoice.getValorFatura() + "\n");
+			codeReturn(out, 200, Status.getMessage(200), answer);
 			invoice.setValorFatura(0);
 		}
 
 	}
 
-	private static void codeReturn(PrintWriter out, int i, String status) {
-		out.println("HTTP/1.1 " + i + " " + status);
+	private static void codeReturn(PrintWriter out, int i, String status, String answer) {
+		out.println("HTTP/1.1 " + i + " " + status + "\r\n");
 		out.println("Content-Type:text/plain");
-		out.println();
-		out.println("Mensagem:" + status);
+		out.print("Content-Length: " + answer.length() + "\r\n");
+		out.print("\r\n");
+		out.print(answer);
 		out.flush();
 	}
 

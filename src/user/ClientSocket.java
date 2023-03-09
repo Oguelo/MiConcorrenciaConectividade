@@ -36,35 +36,38 @@ public class ClientSocket {
 				loginNumber = matriculScanner.toUpperCase();
 
 			} while (loginNumber == null);
+			while (loginNumber != null) {
+				if (loginNumber.charAt(0) == 'U') {
+					System.out.println("\n");
+					System.out.println("Bem vindo ao menu do usuario");
+					System.out.println("(1) - Gerar Fatura");
+					System.out.println("(2) - Observar Consumo");
+					System.out.println("(3) - logoff do sistema");
+					System.out.println("Digite a opcao desejada:");
+					String opcao = choiceMScanner.nextLine();
+					switch (opcao) {
 
-			if (loginNumber.charAt(0) == 'U') {
-				System.out.println("\n");
-				System.out.println("Bem vindo ao menu do usuario");
-				System.out.println("(1) - Gerar Fatura");
-				System.out.println("(2) - Observar Consumo");
-				System.out.println("(3) - logoff do sistema");
-				System.out.println("Digite a opcao desejada:");
-				String opcao = choiceMScanner.nextLine();
-				switch (opcao) {
+					case "1":
+						generateInvoice(loginNumber, socket);
+						break;
+					case "2":
+						viewHistory(loginNumber, socket);
+						break;
 
-				case "1":
-					generateInvoice(loginNumber, socket);
-					break;
-				case "2":
-					viewHistory(loginNumber, socket);
-					break;
+					case "3":
+						exitSystem(loginNumber, socket);
+						loginNumber = null;
+						socket.close();
+						break;
 
-				case "3":
-					exitSystem(loginNumber, socket);
-					loginNumber = null;
-					break;
+					default:
+						System.out.println("Opcao nao encontrada do cliente");
+						break;
 
-				default:
-					System.out.println("Opcao nao encontrada do cliente");
-					break;
-
+					}
+				}else {
+					System.out.println("Digite um login Valido");
 				}
-
 			}
 			socket.close();
 		} catch (IOException e) {
