@@ -1,6 +1,6 @@
 package gauge;
 
-
+//a classe CounterUpdater é responsável por atualizar o valor do medidor de energia e exibir o valor atualizado a cada segundo.
 public class CounterUpdater implements Runnable {
     private volatile double gauge = 0;
 	private volatile double edition = 2;
