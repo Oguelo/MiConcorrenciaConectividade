@@ -83,7 +83,7 @@ public class ClientSocket {
 	}
 
 	private static boolean authenticator(String matriculScanner, Socket socket) throws IOException {
-	    path = "/login/-" + matriculScanner;
+	    path = "/login/" + matriculScanner;
 	    String host = "http://localhost:8922";
 	    String request = "GET" + " " + path + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n";
 	    OutputStream out = socket.getOutputStream();

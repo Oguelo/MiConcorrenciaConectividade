@@ -17,9 +17,11 @@ public class SendReceiveMed {
     }
 
     public void sendMessage(String message) throws IOException {
+    	
         byte[] sendData = message.getBytes();
         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverAddress, 8923);
         clientSocket.send(sendPacket);
+        
     }
 
     public String receiveMessage() throws IOException {
@@ -28,6 +30,7 @@ public class SendReceiveMed {
         clientSocket.receive(receivePacket);
         String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
         return message;
+        
     }
 
     public void close() {

@@ -5,19 +5,19 @@ import java.util.ArrayList;
 public class DaoUser {
     private static ArrayList<User> listUserClients;
     private static ArrayList<Measure> listUserContas;
-
+    
     public DaoUser() {
         listUserClients = new ArrayList<>();
         listUserContas = new ArrayList<>();
         listUserClients.add(new User("U40028922", "Alex"));
         listUserClients.add(new User("U3322424", "jorge"));
         listUserContas.add(new Measure("U40028922", "Alex", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U40028922", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U40028922", "Rodrigo", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U40028922", "Kaio", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U40028922", "Robson", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U3322424", "Lucas", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-        listUserContas.add(new Measure("U3322424", "Bruno", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U40028923", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U40028924", "Rodrigo", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U40028925", "Kaio", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U40028926", "Robson", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U33224246", "Lucas", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+        listUserContas.add(new Measure("U33224247", "Bruno", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
     }
 
     public static  synchronized ArrayList<Measure> getListUserContas() {

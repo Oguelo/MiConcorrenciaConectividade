@@ -2,42 +2,54 @@ package gauge;
 
 //a classe CounterUpdater é responsável por atualizar o valor do medidor de energia e exibir o valor atualizado a cada segundo.
 public class CounterUpdater implements Runnable {
-    private volatile double gauge = 0;
-	private volatile double edition = 2;
-    private volatile boolean running;
+    private static volatile double gauge = 0;
+    private volatile static double gaugeValue = 0;
+	private volatile static  double edition = 2;
+    private volatile static boolean running;
 
-    public double getGauge() {
+    public static double getGauge() {
 		return gauge;
 	}
 
-	public void setGauge(double gauge) {
-		this.gauge = gauge;
+	public static void setGauge(double gauge) {
+		CounterUpdater.gauge = gauge;
 	}
 
-	public boolean isRunning() {
-		return running;
+	public static double getGaugeValue() {
+		return gaugeValue;
 	}
 
-	public void setRunning(boolean running) {
-		this.running = running;
+	public static void setGaugeValue(double gaugeValue) {
+		CounterUpdater.gaugeValue = gaugeValue;
 	}
 
-	public double getEdition() {
+	public static double getEdition() {
 		return edition;
 	}
 
-    public void setEdition(double edition) {
-        this.edition = edition;
-    }
+	public static void setEdition(double edition) {
+		CounterUpdater.edition = edition;
+	}
 
-    @Override
+	public static boolean isRunning() {
+		return running;
+	}
+
+	public static void setRunning(boolean running) {
+		CounterUpdater.running = running;
+	}
+
+	@Override
     public void run() {
         running = true;
+   
         while (running) {
             gauge += edition;
-            System.out.println("Gauge: " + gauge);
+            gaugeValue = gauge;
+            System.out.println(gauge);
             try {
                 Thread.sleep(1000);
+  
             } catch (InterruptedException e) {
                 // ignore
             }
