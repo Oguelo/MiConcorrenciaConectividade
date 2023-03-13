@@ -46,7 +46,6 @@ public class CounterUpdater implements Runnable {
         while (running) {
             gauge += edition;
             gaugeValue = gauge;
-            System.out.println(gauge);
             try {
                 Thread.sleep(1000);
   

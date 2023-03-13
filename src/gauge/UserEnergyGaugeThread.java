@@ -64,7 +64,7 @@ public class UserEnergyGaugeThread extends Thread {
 		while (onMed) {
 
 			try {
-				System.out.println("Chegou aqui");
+				
 				Thread.sleep(60000); // Espera 1 minuto
 				double gaugeValue = CounterUpdater.getGauge();
 				SendReceiveMed sendReceive = new SendReceiveMed();
@@ -73,7 +73,6 @@ public class UserEnergyGaugeThread extends Thread {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 				String dataHora = now.format(formatter);
 				String medicao = matriculScanner + "," + gaugeValue + "," + dataHora;
-				System.out.println("Enviando dados ");
 				sendReceive.sendMessage(medicao);
 				CounterUpdater.setGauge(0); // Reinicia o contador do medidor
 
