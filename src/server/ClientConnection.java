@@ -43,6 +43,7 @@ public class ClientConnection implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			System.out.println("===================================================================================================");
 			System.out.println("Received request:\n" + request.toString());
 			
 			String[] endpoint = request.toString().split(" ");

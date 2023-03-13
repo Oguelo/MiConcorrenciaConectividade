@@ -53,8 +53,7 @@ public class UdpSocketServer implements Runnable {
 
 
                 } else if (!match.find()){ // se a mensagem recebida não tiver apenas 1 caractere
-                    // divide a string recebida em suas partes
-                	System.out.println("Nao entrei");
+               
                 	 Measure confirmation = DaoUser.searchMeasure(message); // busca a medição do usuário correspondente
                      if (confirmation != null) { // se a medição foi encontrada
                      	send = "ok".getBytes(); // cria uma mensagem de resposta "ok"

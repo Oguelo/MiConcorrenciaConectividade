@@ -63,7 +63,7 @@
 	            int numHistoricalValues = measure.getHistoriclList().size();
 	            if (numHistoricalValues > 0) {
 	                double avgConsumption = newSummedConsumption / numHistoricalValues;
-	                if (avgConsumption < initialValue) {
+	                if (avgConsumption + 100 < initialValue) {
 	                    measure.setoverconsumption(true);
 	                } else {
 	                    measure.setoverconsumption(false);
