@@ -1,117 +1,122 @@
-package server;
+	package server;
+	
+	import java.util.ArrayList;
+	
+	public class DaoUser {
+	    private static ArrayList<User> listUserClients;
+	    private static ArrayList<Measure> listUserContas;
+	    
+	    public DaoUser() {
+	        listUserClients = new ArrayList<>();
+	        listUserContas = new ArrayList<>();
+	      
+	        listUserClients.add(new User("U40028922", "Alex"));
+	        listUserClients.add(new User("U3322424", "jorge"));
+	        listUserContas.add(new Measure("U40028922", "Alex", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U40028923", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U40028924", "Rodrigo", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U40028925", "Kaio", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U40028926", "Robson", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U33224246", "Lucas", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        listUserContas.add(new Measure("U33224247", "Bruno", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+	        
+	    }
+	
+	    public static  synchronized ArrayList<Measure> getListUserContas() {
+	        return listUserContas;
+	    }
+	
+	    public static  synchronized void setListUserContas(ArrayList<Measure> listUserContas) {
+	        DaoUser.listUserContas = listUserContas;
+	    }
+	
+	    public static synchronized  ArrayList<User> getListUserClients() {
+	        return listUserClients;
+	    }
+	
+	    public static  synchronized void setListUserClients(ArrayList<User> listUserClients) {
+	        DaoUser.listUserClients = listUserClients;
+	    }
+	
+	
+	
+	    public static synchronized  Measure searchMeasure(String registration) {
+	        for (Measure measure : listUserContas) {
+	            if (measure.getRegistration().equals(registration)) {
+	                return measure;
+	            }
+	        }
+	        return null;
+	    }
+	
+	  
+	    
+	    
+	    
+	    public static synchronized int addMeasure(String userId, double initialValue, String dataHour) {
+	        Measure measure = searchMeasure(userId);
+	        
+	        if (measure != null) {
+	            double newSummedConsumption = measure.getSummedConsumption() + initialValue;
+	            measure.setSummedConsumption(newSummedConsumption);
 
-import java.util.ArrayList;
-import java.util.List;
+	            int numHistoricalValues = measure.getHistoriclList().size();
+	            if (numHistoricalValues > 0) {
+	                double avgConsumption = newSummedConsumption / numHistoricalValues;
+	                if (avgConsumption + 100 < initialValue) {
+	                    measure.setoverconsumption(true);
+	                } else {
+	                    measure.setoverconsumption(false);
+	                }
+	            }
 
-public class DaoUser {
-	private static ArrayList<User> listUserClients;
-	private static ArrayList<Measure> listUserContas;
+	            double value = initialValue * 0.05;
+	            String result = String.format("%.2f", value);
+	            double envio = Double.parseDouble(result);
 
-	public DaoUser() {
-		DaoUser.listUserClients = new ArrayList<User>();
-		DaoUser.listUserContas = new ArrayList<Measure>();
-		User usuarioUm = new User("U40028922", "Alex");
-		User usuarioDois = new User("U3322424", "jorge");
-		Measure usuarioUmConta = new Measure("U40028922", "Alex", 0, false, 0, null, null);
-		Measure usuarioDoisConta = new Measure("U3322424", "jorge", 0, false, 0, null, null);
-		DaoUser.listUserClients.add(usuarioUm);
-		DaoUser.listUserClients.add(usuarioDois);
-		DaoUser.listUserContas.add(usuarioUmConta);
-		DaoUser.listUserContas.add(usuarioDoisConta);
+	            measure.setValorFatura(measure.getValorFatura() + envio);
+	            measure.getHistoriclList().add(initialValue); //caso eu precise so do valor separado 
+	            ArrayList<String> newList = measure.getHistoricListData();  
+	            newList.add(String.format("Data/Hora: %s - Medição em kwH: %s - valor unitario(R$): %s", dataHour, initialValue, envio));
+	            measure.setHistoricListData(newList);
 
-	}
-
-	public static ArrayList<Measure> getListUserContas() {
-		return listUserContas;
-	}
-
-	public static void setListUserContas(ArrayList<Measure> listUserContas) {
-		DaoUser.listUserContas = listUserContas;
-	}
-
-	public static ArrayList<User> getListUserClients() {
-		return listUserClients;
-	}
-
-	public static void setListUserClients(ArrayList<User> listUserClients) {
-		DaoUser.listUserClients = listUserClients;
-	}
-
-	public static String addClient(User object) {
-		User confirmation = (User) searchUser(object.getRegistration());
-		if (confirmation != null) {
-			do {
-				object.setRegistration("U" + Double.toString((Math.random() * 1000000) + 1));
-			} while (searchUser("U" + Double.toString((Math.random() * 1000000) + 1)) != null);
-
-			listUserClients.add(object);
-			listUserContas.add((Measure) object);
-		} else {
-			listUserClients.add(object);
-			listUserContas.add((Measure) object);
-		}
-		return object.getRegistration();
-
-	}
-
-	public static Object searchUser(String registration) {
-		for (User object : listUserClients) {
-			if (object.getRegistration().equals(registration)) {
-				return object;
-			}
-		}
-		return null;
-	}
-
-	public static Measure searchMeasure(String registration) {
-		for (Measure object : listUserContas) {
-			if (object.getRegistration().equals(registration)) {
-				return object;
-			}
-		}
-		return null;
-	}
-
-	public static int addMeasure(String userId, double initialValue, String dataHour) {
-		double soma = 0;
-		for (Measure object : listUserContas) {
-			if (object.getRegistration().equals(userId)) {
-					
-				if (object.getSummedConsumption()/object.getHistoriclList().size() < initialValue) { // definir se o consumo é exagerado
-					object.setoverconsumption(true);
-
-				} else {
-					object.setoverconsumption(false);
-				}
-				object.setSummedConsumption(object.getSummedConsumption() + initialValue); // setar o valor total
-				double valor = initialValue * 0.50;
-				object.setValorFatura(object.getValorFatura() + valor);
-				ArrayList<Double> listaNova = object.getHistoriclList();// pegar a lista de valores em double para usar caso necessario e salvar novamente com os novos valores 
-				ArrayList<String> listaNovaHistoric = object.getHistoricListData();
-				listaNova.add(initialValue);
-				object.setHistoricList(listaNova);
-				listaNovaHistoric.add("Data/Hora:" + dataHour + " - " +"Medição em kwH:" + initialValue + " - " + "valor unitario" + valor);
-				object.setHistoricListData(listaNovaHistoric);
-				return 200;
-			}
-		}
-		return 404;
-	}
-
-	public static Measure generateHistoric(String userId) {
-		Measure historic = searchMeasure(userId);
-		if (historic == null) {
-			return null;
-		}else {
-			
-			/*
-			 * StringBuilder stringList = new StringBuilder(); for(String num :
-			 * historic.getHistoricListData()) { stringList.append(num).append("\n"); }
-			 * stringList.append("Soma Total de Consumo:" +historic.getSummedConsumption());
-			 * String retornoLista = stringList.toString();
-			 */
-			return historic;
-		}
+	            if (listUserContas.contains(measure)) {
+	                listUserContas.remove(measure);
+	            }
+	            listUserContas.add(measure);
+	            return 200;
+	        }
+	        return 404;
+	    }
 
 	}
-}
+
+	/*
+	 * public static Measure generateHistoric(String userId) { Measure historic =
+	 * searchMeasure(userId); if (historic == null) { return null; }else {
+	 * 
+	 * 
+	 * StringBuilder stringList = new StringBuilder(); for(String num :
+	 * historic.getHistoricListData()) { stringList.append(num).append("\n"); }
+	 * stringList.append("Soma Total de Consumo:" +historic.getSummedConsumption());
+	 * String retornoLista = stringList.toString();
+	 * 
+	 * return historic; }
+	 * 
+	 * }
+	 */
+
+/*
+ * public static synchronized String addClient(User user) { if
+ * (searchUser(user.getRegistration()) != null) { user.setRegistration("U" +
+ * Double.toString((Math.random() * 1000000) + 1)); } listUserClients.add(user);
+ * listUserContas.add(new Measure(user.getRegistration(), user.getName(), 0,
+ * false, 0, new ArrayList<>(), new ArrayList<>())); return
+ * user.getRegistration(); }
+ */
+
+/*
+ * public static synchronized User searchUser(String registration) { for (User
+ * user : listUserClients) { if (user.getRegistration().equals(registration)) {
+ * return user; } } return null; }
+ */

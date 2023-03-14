@@ -3,26 +3,33 @@ package user;
 import java.net.*;
 import java.util.Scanner;
 
-import org.json.JSONObject;
-
 import java.io.*;
 
 public class ClientSocket {
-	private static final boolean ServerOn = true;
+	private static boolean serverOn = true;
 	private static int porta = 8922;
+	private static String path;
+	private static Socket socket;
+	private static InputStream in;
+	private static OutputStream out;
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		while (ServerOn) {
+	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+		socket = new Socket("127.0.0.1", porta); // conecta ao servidor
+		in = socket.getInputStream();
+		out = socket.getOutputStream();
+		while (serverOn) {
 			telaLogin();
+			serverOn = false;
 		}
-
 	}
 
-	public static void telaLogin() throws ClassNotFoundException {
-		Scanner choiceMScanner = new Scanner(System.in);
-		try {
+	public static void telaLogin() throws ClassNotFoundException, IOException, InterruptedException {
+		/*
+		 * Scanner choiceMScanner = new Scanner(System.in); Scanner opcaoScanner = new
+		 * Scanner(System.in);
+		 */
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-			Socket socket = new Socket("127.0.0.1", porta); // conecta ao servidor
 			System.out.println("Conexão estabelecida com o servidor.");
 			String matriculScanner;
 			String loginNumber;
@@ -32,95 +39,87 @@ public class ClientSocket {
 						"--------------------------Bem vindo ao Sistema de Monitoramento de Energia--------------------------");
 				System.out.println("Digite sua matricula:"); // a matricula devera ser iniciada pela letra inicial
 																// referente ao tipo de usuario 'A'- adm, 'U' - usuario
-				matriculScanner = choiceMScanner.nextLine();
+				matriculScanner = reader.readLine();
 				loginNumber = matriculScanner.toUpperCase();
-
+				path = "/login/" + matriculScanner;
+				
 			} while (loginNumber == null);
-			while (loginNumber != null) {
-				if (loginNumber.charAt(0) == 'U') {
-					System.out.println("\n");
-					System.out.println("Bem vindo ao menu do usuario");
-					System.out.println("(1) - Gerar Fatura");
-					System.out.println("(2) - Observar Consumo");
-					System.out.println("(3) - logoff do sistema");
-					System.out.println("Digite a opcao desejada:");
-					String opcao = choiceMScanner.nextLine();
-					switch (opcao) {
+			String resposta = sendRequest(path, "GET", socket);
+			if(resposta.contains("OK")) {
+				
+				boolean logado = true;
+				while (logado) {
+					socket = new Socket("127.0.0.1", porta); // conecta ao servidor
+					in = socket.getInputStream();
+					out = socket.getOutputStream();
+					if (loginNumber.charAt(0) == 'U') {
+						
+						System.out.println("\n");
+						System.out.println("Bem vindo ao menu do usuario");
+						System.out.println("(1) - Gerar Fatura");
+						System.out.println("(2) - Observar Consumo");
+						System.out.println("(3) - logoff do sistema");
+						System.out.println("Digite a opcao desejada:");
+						matriculScanner = reader.readLine();
+						switch (matriculScanner) {
 
-					case "1":
-						generateInvoice(loginNumber, socket);
-						break;
-					case "2":
-						viewHistory(loginNumber, socket);
-						break;
+						case "1":
+							System.out.println("\n");
+							System.out.println("Gerando Fatura");
+							path = "/generateinvoice/" + loginNumber;
+							sendRequest(path, "GET", socket);
+							Thread.sleep(60000);
+							break;
+						case "2":
+							System.out.println("\n");
+							System.out.println("Gerando Historico");
+							
+							path = "/viewhistory/" + loginNumber;
+							
+							sendRequest(path, "GET", socket);
+							Thread.sleep(60000);
+							break;
 
-					case "3":
-						exitSystem(loginNumber, socket);
-						loginNumber = null;
-						socket.close();
-						break;
+						case "3":
+							loginNumber = null;
+							break;
 
-					default:
-						System.out.println("Opcao nao encontrada do cliente");
-						break;
+						default:
+							System.out.println("Opcao nao encontrada do cliente");
+							break;
 
+						}
+					} else {
+						System.out.println("Digite um login Valido");
 					}
-				}else {
-					System.out.println("Digite um login Valido");
-				}
+				}socket.close();
+				
+				} 
 			}
-			socket.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+
+
+	private static String sendRequest(String path, String method, Socket socket) throws IOException {
+		String host = "http://localhost:8922";
+		String request = method + " " + path + " HTTP/1.1\r\n" + "Host: " + host + "\r\n"
+				+ "Connection:keep-alive\r\n\r\n";
+
+		out.write(request.getBytes());
+		byte[] buffer = new byte[4096];
+		int bytesRead = in.read(buffer);
+
+		String response = new String(buffer, 0, bytesRead);
+		String palavra = "ID";
+		int posicao = response.indexOf(palavra);
+		if (posicao >= 0) {
+		    System.out.println(response.substring(posicao));
 		}
-	}
-
-	private static void viewHistory(String loginNumber, Socket socket) throws IOException {
-		System.out.println("\n");
-		System.out.println("Gerando Historico");
-		String host = "http://localhost:8922";
-		String path = "/viewhistory/" + loginNumber;
-		OutputStream out = socket.getOutputStream();
-		InputStream in = socket.getInputStream();
-		String request = "GET " + path + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n";
-		out.write(request.getBytes());
-		byte[] buffer = new byte[4096];
-		int bytesRead = in.read(buffer);
-		String response = new String(buffer, 0, bytesRead);
-
-		System.out.println(response);
-
-		out.close();
-		in.close();
-	}
-
-	private static void generateInvoice(String loginNumber, Socket socket) throws IOException {
-		System.out.println("\n");
-		System.out.println("Gerando Historico");
-		String host = "http://localhost:8922";
-		String path = "/generateinvoice/" + loginNumber;
-		OutputStream out = socket.getOutputStream();
-		InputStream in = socket.getInputStream();
-		String request = "GET " + path + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n";
-		out.write(request.getBytes());
-		byte[] buffer = new byte[4096];
-		int bytesRead = in.read(buffer);
-		String response = new String(buffer, 0, bytesRead);
-
-		System.out.println(response);
-
-		out.close();
-		in.close();
-	}
-
-	private static void exitSystem(String loginNumber, Socket socket) throws IOException {
-		System.out.println("\n");
-		System.out.println("Logoff do sistema");
-		PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-		out.println("GET /logoff/" + loginNumber + " HTTP/1.1");
-		out.println();
 		out.flush();
+	
+		return response;
+
 	}
+
 }
 
 /*
