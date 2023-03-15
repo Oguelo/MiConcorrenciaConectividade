@@ -1,7 +1,5 @@
 package gauge;
 
-
-
 import java.io.IOException;
 
 public class StartMedidor {

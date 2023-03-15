@@ -15,13 +15,13 @@ public class DaoUser {
 
 		listUserClients.add(new User("U40028922", "Alex"));
 		listUserClients.add(new User("U3322424", "jorge"));
-		listUserContas.add(new Measure("U40028923", "Alex", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028924", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028925", "Rodrigo", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028926", "Kaio", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028927", "Robson", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028928", "Lucas", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
-		listUserContas.add(new Measure("U40028929", "Bruno", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U40028922", "Alex", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U40028923", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U40028924", "Rodrigo", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U40028925", "Kaio", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U40028926", "Robson", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U33224246", "Lucas", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
+		listUserContas.add(new Measure("U33224247", "Bruno", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
 
 	}
 
@@ -73,9 +73,6 @@ public class DaoUser {
 				listFatura.add(String.format("-Mes:" + flag + " " + "Fatura(R$):" + valorMes));
 				measure.setHistoricList(listFatura);
 				flag += 1;
-				if (flag == 12) {
-					flag = 1;
-				}
 			}
 
 			// caso eu precise so do valor separado
@@ -148,8 +145,7 @@ public class DaoUser {
 
 		if (mesPassado < mesAtual) {
 			mesPassado += 1;
-			String formatado = String.format("%.2f", valorFatura);
-			String valorPassado = String.valueOf(formatado);
+			String valorPassado = String.valueOf(valorFatura);
 			valorFatura = 0.0;
 			return String.valueOf(valorPassado);
 
