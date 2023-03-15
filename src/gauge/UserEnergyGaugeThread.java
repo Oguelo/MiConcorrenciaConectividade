@@ -8,9 +8,7 @@ import java.util.Scanner;
 public class UserEnergyGaugeThread extends Thread {
 	private static String matriculScanner;
 	private CounterUpdater updater;
-	private static int flag = 1;
-	private static long tempoDia = 20000;
-	private static long tempoMes = 0;
+
 	public UserEnergyGaugeThread(CounterUpdater updater) {
 		this.updater = updater;
 	}
@@ -32,7 +30,7 @@ public class UserEnergyGaugeThread extends Thread {
 			updaterThread.start();
 
 			while (validation == true) {
-				System.out.println("A atual bandeira de medição:" + CounterUpdater.getEdition());
+
 				System.out.print("Digite o novo valor que deseja(ou n para sair) :");
 				String input = scanner.nextLine();
 				if (input.equalsIgnoreCase("n")) {
@@ -67,25 +65,17 @@ public class UserEnergyGaugeThread extends Thread {
 
 			try {
 				
-				Thread.sleep(tempoDia); // Espera 20seg
-				
+				Thread.sleep(10000); // Espera 1 minuto
 				double gaugeValue = CounterUpdater.getGauge();
 				SendReceiveMed sendReceive = new SendReceiveMed();
 				// Constrói uma string com os dados da medição
 				LocalDateTime now = LocalDateTime.now();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 				String dataHora = now.format(formatter);
-				String medicao = matriculScanner + "," + gaugeValue + "," + dataHora + "," + flag;
+				String medicao = matriculScanner + "," + gaugeValue + "," + dataHora;
 				sendReceive.sendMessage(medicao);
 				CounterUpdater.setGauge(0); // Reinicia o contador do medidor
-				tempoMes += tempoDia;
-				if (tempoMes == 120 * 1000) {// dois minutos equivale a um mes
-					flag += 1;
-					tempoMes = 0;
-				}
-				if(flag == 12) {
-					flag = 1;
-				}
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

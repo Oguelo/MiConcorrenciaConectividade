@@ -45,7 +45,7 @@ public class ClientConnection implements Runnable {
 			}
 			System.out.println("===================================================================================================");
 			System.out.println("Received request:\n" + request.toString());
-			System.out.println("===================================================================================================");
+			
 			String[] endpoint = request.toString().split(" ");
 			String path = endpoint[1];
 			String[] parts = path.split("/");
@@ -111,9 +111,10 @@ public class ClientConnection implements Runnable {
 			// Monta a resposta com o histórico de consumo e o consumo total do usuário com
 			// o ID fornecido
 			String answer = ("ID:" + id + "\n");
+			String separator = ", ";
 			StringBuilder sb = new StringBuilder();
 			for(String str : historic.getHistoricListData()) {
-				sb.append(str + "\n");
+				sb.append(str).append(separator);
 			}
 			answer += sb;
 			answer += ("Consumo Total:" + historic.getSummedConsumption() + "\n");
@@ -132,17 +133,18 @@ public class ClientConnection implements Runnable {
 
 		} else {
 			String answer = ("ID:" + id + "\n");
-			
+			String separator = ", ";
 			StringBuilder sb = new StringBuilder();
-			for(String str : invoice.getHistoriclList()) {
-				sb.append(str +"\n");
+			for(String str : invoice.getHistoricListData()) {
+				sb.append(str).append(separator);
 			}
 			answer += sb;
-			
+			answer += ("Consumo Total" + invoice.getSummedConsumption() + "\n");
+			answer += ("Valor da Fatura:" + invoice.getValorFatura() + "\n");
 			if(invoice.getOverConsumption() == true) {
-				answer += ("Seu Consumo Atual esta Alto, diminua o consumo para que sua proxima fatura não venha alta");
+				answer += ("Seu Consumo esta Alto");
 			}else {
-				answer += ("Seu Consumo Atual esta controlado, continue assim");
+				answer += ("Seu Consumo esta controlado, continue assim");
 			}
 			codeReturn(out, 200, Status.getMessage(200), answer);
 			invoice.setValorFatura(0);

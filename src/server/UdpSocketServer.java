@@ -33,7 +33,7 @@ public class UdpSocketServer implements Runnable {
                 String message = new String(dataReceive.getData(), 0, dataReceive.getLength()).trim();
                 InetAddress enderecoClient = dataReceive.getAddress(); // obtém o endereço IP do cliente
                 int port = dataReceive.getPort(); // obtém o número da porta do cliente
-                Pattern pattern = Pattern.compile("U\\d+,\\d+\\.\\d+,\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2},\\d+");
+                Pattern pattern = Pattern.compile("U\\d+,\\d+\\.\\d+,\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2}");
                 
                 Matcher match = pattern.matcher(message);
                 if (match.find()) {
@@ -43,12 +43,11 @@ public class UdpSocketServer implements Runnable {
                       String matricula = partes[0];
                       double gaugeValue = Double.parseDouble(partes[1]);
                       String dataHora = partes[2];
-                      String flag = partes[3];
                       System.out.println(matricula);
                       System.out.println(gaugeValue);
                       System.out.println(dataHora);
-                    
-                      DaoUser.addMeasure(matricula, gaugeValue, dataHora, flag);  //adiciona uma nova medição para o user correspondente
+                      // adiciona uma nova medição para o usuário correspondente
+                      DaoUser.addMeasure(matricula, gaugeValue, dataHora);
                       System.out.println(DaoUser.getListUserContas().get(6).getHistoricListData().size());
                       
 
