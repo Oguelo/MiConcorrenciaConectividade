@@ -8,10 +8,10 @@ public class Measure extends User implements Serializable {
 	private double summedConsumption = 0; // consumo total, sera somado junto com a implementação da lista
 	private boolean overConsumption = false;
 	private double valorFatura = 0;
-	private ArrayList<Double> historicList;
+	private ArrayList<String> historicList;
 	private ArrayList<String> historicListData;
 
-	public Measure(String registration, String name,double summedConsumption,  boolean overConsumption, double valorFatura, ArrayList<Double> historicList, ArrayList<String> historicListData) {
+	public Measure(String registration, String name,double summedConsumption,  boolean overConsumption, double valorFatura, ArrayList<String> historicList, ArrayList<String> historicListData) {
 		super(registration, name);
 		this.summedConsumption = summedConsumption;
 		this.overConsumption = overConsumption;
@@ -43,12 +43,12 @@ public class Measure extends User implements Serializable {
 	
 	
 	
-	public ArrayList<Double> getHistoriclList() {
+	public ArrayList<String> getHistoriclList() {
 		return historicList;
 	}
 
-	public void setHistoricList(ArrayList<Double> values) {
-		this.historicList = values;
+	public void setHistoricList(ArrayList<String> valorMes) {
+		this.historicList = valorMes;
 	}
 	
 	
