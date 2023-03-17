@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>MiConcorrenciaConectividade</groupId>
-  <artifactId>MiConcorrenciaConectividade</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <build>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>MiConcorrenciaConectividade</groupId>
+	<artifactId>MiConcorrenciaConectividade</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
@@ -24,7 +24,6 @@
 						<configuration>
 							<source>15</source>
 							<target>15</target>
-							<mainClass>src.gauge.StartMedidor</mainClass>
 						</configuration>
 					</execution>
 					<execution>
@@ -36,77 +35,62 @@
 						<configuration>
 							<source>15</source>
 							<target>15</target>
-							<mainClass>src.server.HttpSoc</mainClass>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.2.0</version>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<version>3.2.0</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
 				<executions>
 					<execution>
-						<id>copy-dependencies-main1</id>
+						<id>measurer</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy-dependencies</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies/StartMedidor</outputDirectory>
-							<includeScope>runtime</includeScope>
-							<excludeTransitive>true</excludeTransitive>
-							<stripVersion>true</stripVersion>
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-dependencies-main2</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies/HttpSoc</outputDirectory>
-							<includeScope>runtime</includeScope>
-							<excludeTransitive>true</excludeTransitive>
-							<stripVersion>true</stripVersion>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
-				<executions>
-					<execution>
-						<id>make-a-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<finalName>Medidor</finalName>
-							<classifier>main1</classifier>
-							<includes>
-								<include>target/classes/Medidor.class</include>
-							</includes>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>gauge/StartMedidor</mainClass>
+								</manifest>
+							</archive>
+							<finalName>StartMedidor</finalName> 
 							<outputDirectory>${basedir}/src/dockerfile/gauge</outputDirectory>
 						</configuration>
 					</execution>
 					<execution>
-						<id>make-a-jar-main2</id>
+						<id>server</id>
 						<phase>package</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>Servidor</finalName>
-							<classifier>main2</classifier>
-							<includes>
-								<include>target/classes/Server.class</include>
-							</includes>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>server/HttpSoc</mainClass>
+								</manifest>
+							</archive>
 							<outputDirectory>${basedir}/src/dockerfile/server</outputDirectory>
+							<finalName>HttpSoc</finalName> 
 						</configuration>
 					</execution>
 				</executions>
