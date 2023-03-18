@@ -5,15 +5,12 @@ import java.util.ArrayList;
 public class DaoUser {
 	private static ArrayList<User> listUserClients;
 	private static ArrayList<Measure> listUserContas;
-	public static double valorFatura = 0;
-	public static int flag = 1;
-	public static int mesPassado = 0;
 
 	public DaoUser() {
 		listUserClients = new ArrayList<>();
 		listUserContas = new ArrayList<>();
 
-		listUserClients.add(new User("U40028922", "Alex"));
+		listUserClients.add(new User("U40028923", "Alex"));
 		listUserClients.add(new User("U3322424", "jorge"));
 		listUserContas.add(new Measure("U40028923", "Alex", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
 		listUserContas.add(new Measure("U40028924", "Diego", 0, false, 0, new ArrayList<>(), new ArrayList<>()));
@@ -52,11 +49,11 @@ public class DaoUser {
 
 	public static synchronized int addMeasure(String userId, double initialValue, String dataHour, String data) {
 		Measure measure = searchMeasure(userId);
-
+		int dataInt = Integer.parseInt(data);
 		if (measure != null) {
 			double newSummedConsumption = measure.getSummedConsumption() + initialValue;
 			measure.setSummedConsumption(newSummedConsumption);
-
+			
 			int numHistoricalValues = measure.getHistoricListData().size();
 			if (numHistoricalValues > 0) {
 				double avgConsumption = newSummedConsumption / numHistoricalValues;
@@ -66,18 +63,27 @@ public class DaoUser {
 					measure.setoverconsumption(false);
 				}
 			}
-			String valorMes = calendarioMed(data, initialValue);
-			double value = initialValue * 0.10;
-			if (valorMes != "0") {
-				ArrayList<String> listFatura = measure.getHistoriclList();
-				listFatura.add(String.format("-Mes:" + flag + " " + "Fatura(R$):" + valorMes));
-				measure.setHistoricList(listFatura);
-				flag += 1;
-				if (flag == 12) {
-					flag = 1;
+	
+			if(dataInt == measure.getFlag()) {
+				double value = initialValue * 0.10;
+				double valueGauge = measure.getValorFatura() + value;
+				measure.setValorFatura(valueGauge);
+				if (measure.getFlag() == 12) {
+					measure.setFlag(1);
 				}
+				
+			}else {
+				double valorTotal = measure.getValorFatura();
+				String numeroFormatado = String.format("%.2f", valorTotal);
+				ArrayList<String> listFatura = measure.getHistoricList();
+				listFatura.add(String.format("-Mes:" + measure.getFlag() + " " + "Fatura(R$):" + numeroFormatado));
+				measure.setHistoricList(listFatura);
+				measure.setValorFatura(0);
+				int flag = measure.getFlag() + 1;
+				measure.setFlag(flag);
+				
 			}
-
+			double value = initialValue * 0.10;
 			// caso eu precise so do valor separado
 			ArrayList<String> newList = measure.getHistoricListData();
 			newList.add(String.format("- Mes:%s - Data/Hora: %s - Medição em kwH: %s - valor unitario(R$): %s", data,
@@ -93,72 +99,11 @@ public class DaoUser {
 		return 404;
 	}
 
-	private static synchronized String calendarioMed(String data, double initialValue) {
-		int numero = Integer.parseInt(data);
-		String retorno = null;
-		switch (data) {
+	
 
-		case "1":
-			mesPassado = 1;
-			retorno = changeData(numero, initialValue);
-			break;
-		case "2":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "3":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "4":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "5":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "6":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "7":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "8":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "9":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "10":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "11":
-			retorno = changeData(numero, initialValue);
-			break;
-		case "12":
-			retorno = changeData(numero, initialValue);
-			break;
-		default:
-			System.out.println("Mes invalido");
-			break;
 
-		}
-		return retorno;
 
-	}
-
-	private static String changeData(int mesAtual, double initialValue) {
-
-		if (mesPassado < mesAtual) {
-			mesPassado += 1;
-			String formatado = String.format("%.2f", valorFatura);
-			String valorPassado = String.valueOf(formatado);
-			valorFatura = 0.0;
-			return String.valueOf(valorPassado);
-
-		} else {
-			valorFatura += initialValue * 0.05;
-			return "0";
-		}
-
-	}
+		
 
 }
 

@@ -10,6 +10,8 @@ public class Measure extends User implements Serializable {
 	private double valorFatura = 0;
 	private ArrayList<String> historicList;
 	private ArrayList<String> historicListData;
+	private int flag = 1;
+	
 
 	public Measure(String registration, String name,double summedConsumption,  boolean overConsumption, double valorFatura, ArrayList<String> historicList, ArrayList<String> historicListData) {
 		super(registration, name);
@@ -40,12 +42,6 @@ public class Measure extends User implements Serializable {
 	}
 
 	
-	
-	
-	
-	public ArrayList<String> getHistoriclList() {
-		return historicList;
-	}
 
 	public void setHistoricList(ArrayList<String> valorMes) {
 		this.historicList = valorMes;
@@ -69,5 +65,15 @@ public class Measure extends User implements Serializable {
 		this.valorFatura = valorFatura;
 	}
 
+	public int getFlag() {
+		return flag;
+	}
 
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
+
+	public ArrayList<String> getHistoricList() {
+		return historicList;
+	}
 }

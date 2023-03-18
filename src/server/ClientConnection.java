@@ -43,9 +43,11 @@ public class ClientConnection implements Runnable {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			System.out.println("===================================================================================================");
+			System.out.println(
+					"===================================================================================================");
 			System.out.println("Received request:\n" + request.toString());
-			System.out.println("===================================================================================================");
+			System.out.println(
+					"===================================================================================================");
 			String[] endpoint = request.toString().split(" ");
 			String path = endpoint[1];
 			String[] parts = path.split("/");
@@ -94,7 +96,7 @@ public class ClientConnection implements Runnable {
 			// fornecido
 			codeReturn(out, 404, Status.getMessage(404), Status.getMessage(404));
 		} else {
-			codeReturn(out, 200, Status.getMessage(200), "ID Conectado:"+id);
+			codeReturn(out, 200, Status.getMessage(200), "ID Conectado:" + id);
 		}
 
 	}
@@ -112,7 +114,7 @@ public class ClientConnection implements Runnable {
 			// o ID fornecido
 			String answer = ("ID:" + id + "\n");
 			StringBuilder sb = new StringBuilder();
-			for(String str : historic.getHistoricListData()) {
+			for (String str : historic.getHistoricListData()) {
 				sb.append(str + "\n");
 			}
 			answer += sb;
@@ -127,21 +129,22 @@ public class ClientConnection implements Runnable {
 
 	private static void generateInvoice(PrintWriter out, String id) throws IOException {
 		Measure invoice = DaoUser.searchMeasure(id);
+		
 		if (invoice == null) {
 			codeReturn(out, 404, Status.getMessage(404), Status.getMessage(404));
-
 		} else {
 			String answer = ("ID:" + id + "\n");
 			
 			StringBuilder sb = new StringBuilder();
-			for(String str : invoice.getHistoriclList()) {
-				sb.append(str +"\n");
+			for (String str : invoice.getHistoricList()) {
+				sb.append(str + "\n");
 			}
 			answer += sb;
-			
-			if(invoice.getOverConsumption() == true) {
+	
+
+			if (invoice.getOverConsumption() == true) {
 				answer += ("Seu Consumo Atual esta Alto, diminua o consumo para que sua proxima fatura não venha alta");
-			}else {
+			} else {
 				answer += ("Seu Consumo Atual esta controlado, continue assim");
 			}
 			codeReturn(out, 200, Status.getMessage(200), answer);

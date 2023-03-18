@@ -29,7 +29,6 @@ public class HttpSoc {
 
 				
 
-				System.out.println("passei aqui");
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
