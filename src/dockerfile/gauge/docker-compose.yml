@@ -1,6 +1,11 @@
-version: '3.9'
+version: '3.7'
 services:
-  medidor:
-    build: .
-    ports:
-      - "8923:8923"
+    medidor:
+        image: alexjrjr/app-gauge
+        tty: true
+        stdin_open: true
+        container_name: gauge-app	
+        ports:
+          - 8924:8924
+    
+        

@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+    servidor:
+        image: alexjrjr/app-server
+        container_name: server-app
+        ports:
+          - 8923:8923
+          - 8922:8922
+        network_mode: host
+        
