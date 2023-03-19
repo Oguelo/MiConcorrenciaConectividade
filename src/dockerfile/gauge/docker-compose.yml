@@ -1,0 +1,6 @@
+version: '3.9'
+services:
+  medidor:
+    build: .
+    ports:
+      - "8923:8923"

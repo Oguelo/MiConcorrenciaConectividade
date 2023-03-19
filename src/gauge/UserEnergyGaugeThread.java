@@ -18,26 +18,31 @@ public class UserEnergyGaugeThread extends Thread {
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 		Scanner scanner = new Scanner(System.in);
+		String matriculScanner = null;
+		boolean validationOne = false;
 		// Loop para solicitar a entrada da matrícula do servidor até que ela seja
 		// válida
 		do {
 			System.out.println("Digite o numero de matricula deste medidor:");
 			matriculScanner = scanner.nextLine();
-		} while (matriculScanner == null);
-		boolean validation = authenticator(matriculScanner);
-		if (validation == true) {
+			if (matriculScanner != null) {
+		        validationOne = authenticator(matriculScanner);
+		    }
+		} while (matriculScanner == null || !validationOne);
+		;
+		if (validationOne == true) {
 			CounterUpdater updater = new CounterUpdater();
 			UserEnergyGaugeThread gaugeThread = new UserEnergyGaugeThread(updater);
 			Thread updaterThread = new Thread(updater);
 			updaterThread.start();
 
-			while (validation == true) {
+			while (validationOne == true) {
 				System.out.println("A atual bandeira de medição:" + CounterUpdater.getEdition());
 				System.out.print("Digite o novo valor que deseja(ou n para sair) :");
 				String input = scanner.nextLine();
 				if (input.equalsIgnoreCase("n")) {
 					// Quando o usuário digitar "n", o programa é encerrado após um minuto
-					validation = false;
+					validationOne = false;
 					Thread.sleep(60 * 1000);
 					updater.stop();
 					updaterThread.join();
@@ -53,6 +58,8 @@ public class UserEnergyGaugeThread extends Thread {
 					}
 				}
 			}
+		}else {
+			
 		}
 		scanner.close();
 	}
