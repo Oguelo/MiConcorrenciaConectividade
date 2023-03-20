@@ -4,7 +4,6 @@
 - ``Java 18``
 - ``Eclipse IDEA``
 - ``Protocolo de rede TCP e UDP``
-- ``Insomnia``
 
 
 * [Introdução](#introdução)
@@ -28,6 +27,4 @@
  - Protocolos de rede: Um protocolo de rede é uma série de regras que regulam a maneira como informações são trocadas entre dispositivos em uma       rede.
  - API REST: (Representational State Transfer) é um estilo de arquitetura de software para sistemas distribuídos que utiliza o protocolo HTTP para a comunicação entre diferentes sistemas. É um conjunto de padrões e princípios que definem como as requisições e respostas devem ser feitas, permitindo a integração de diferentes aplicações e sistemas. 
  ## Metodologia
-    Para que este trabalho fosse concretizado, houve a necessidade de utilizar dois protocolos de redes, UDP e TCP, onde o protocolo UDP era util na conexão entre os medidores e o servidor, pois o protocolo é frequentemente utilizado para aplicações que necessitam de uma transmissão de dados rápida e com baixa latência, como o nosso caso supracitado. Isso ocorre porque o UDP não estabelece uma conexão antes de enviar os dados, o que o torna mais rápido e leve que outros protocolos como o TCP. Além disso, o UDP não faz retransmissão de pacotes perdidos, no caso de transmissões de dados de medidores, não há necessidade de garantir a entrega de todos os pacotes, pois os dados são constantemente atualizados e novas medições serão feitas em breve. Assim, o uso do UDP permite que a transmissão de dados ocorra com baixa latência e sem sobrecarregar a rede com retransmissões desnecessárias.
-    E para a conexão entre cliente/servidor
-  
+    Para que este trabalho fosse concretizado, houve a necessidade de utilizar dois protocolos de redes, UDP e TCP. Na comunicação entre o medidor/servidor, foi utilizado o protocolo UDP, pois é frequentemente utilizado para aplicações que necessitam de uma transmissão de dados rápida e com baixa latência, como é o caso do envio de dados de um medidor em tempo real, porque o UDP não estabelece uma conexão antes de enviar os dados, o que o torna mais rápido e leve que outros protocolos como o TCP. Além disso, o UDP não faz retransmissão de pacotes perdidos, no caso de transmissões de dados de medidores, não há necessidade de garantir a entrega de todos os pacotes, pois os dados são constantemente atualizados e novas medições serão feitas em breve. Assim, o uso do UDP permite que a transmissão de dados ocorra com baixa latência e sem sobrecarregar a rede com retransmissões desnecessárias.
