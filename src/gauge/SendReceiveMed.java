@@ -18,7 +18,7 @@ public class SendReceiveMed {
         // Inicia o socket
         clientSocket = new DatagramSocket();
         // Define o endereço: 127.0.0.1, onde 127.0.0.1 é o endereço IPv4 do computador
-        serverAddress = InetAddress.getByName("127.0.0.1");
+        serverAddress = InetAddress.getByName("172.28.1.1");
     }
     
     

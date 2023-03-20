@@ -8,5 +8,10 @@ services:
         ports:
           - 8924:8923
         networks:
-           mynetwork:
-             driver: bridge
+            mynetwork:
+              ipv4_address: 172.28.1.2
+        
+networks:
+   mynetwork:
+      external:
+         name: server_mynetwork

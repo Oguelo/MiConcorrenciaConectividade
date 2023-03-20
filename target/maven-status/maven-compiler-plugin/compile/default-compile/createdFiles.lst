@@ -1,12 +1,12 @@
+gauge\StartMedidor.class
 server\DaoUser.class
+server\HttpSoc.class
 gauge\SendReceiveMed.class
+gauge\UserEnergyGaugeThread.class
 user\ClientSocket.class
 server\User.class
 gauge\CounterUpdater.class
-server\UdpSocketServer.class
-gauge\StartMedidor.class
-server\HttpSoc.class
-gauge\UserEnergyGaugeThread.class
 server\ClientConnection.class
+server\UdpSocketServer.class
 server\Status.class
 server\Measure.class

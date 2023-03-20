@@ -44,7 +44,7 @@ public class UdpSocketServer implements Runnable {
 				double gaugeValue = Double.parseDouble(partes[1]);
 				String dataHora = partes[2];
 				String flag = partes[3];
-
+				
 				DaoUser.addMeasure(matricula, gaugeValue, dataHora, flag); // adiciona uma nova medição para o user
 																			// correspondente
 

@@ -18,7 +18,6 @@ public class UserEnergyGaugeThread extends Thread {
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 		Scanner scanner = new Scanner(System.in);
-		String matriculScanner = null;
 		boolean validationOne = false;
 		// Loop para solicitar a entrada da matrícula do servidor até que ela seja
 		// válida
@@ -29,7 +28,6 @@ public class UserEnergyGaugeThread extends Thread {
 		        validationOne = authenticator(matriculScanner);
 		    }
 		} while (matriculScanner == null || !validationOne);
-		;
 		if (validationOne == true) {
 			CounterUpdater updater = new CounterUpdater();
 			UserEnergyGaugeThread gaugeThread = new UserEnergyGaugeThread(updater);

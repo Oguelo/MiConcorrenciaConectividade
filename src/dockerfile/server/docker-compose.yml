@@ -6,11 +6,13 @@ services:
     ports:
       - 8923:8923
       - 8922:8922
-    "insomnia":
-       container_name: "insomnia"
-       image: "insomnia"
-       networks:
-         - webnet
-
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.1.1
+        
 networks:
-  webnet:
+  mynetwork:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
