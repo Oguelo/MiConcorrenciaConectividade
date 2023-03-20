@@ -6,5 +6,5 @@ services:
     ports:
       - 8923:8923
       - 8922:8922
-    network_mode: host
+    network_mode: bridge
     

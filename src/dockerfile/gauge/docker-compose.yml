@@ -6,6 +6,5 @@ services:
         stdin_open: true
         container_name: gauge-app	
         ports:
-          - 8924:8924
-    
-        
+          - 8924:8923
+        network_mode: bridge

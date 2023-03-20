@@ -14,24 +14,25 @@ public class UdpSocketServer implements Runnable {
 	byte[] receive = new byte[1024]; // array de bytes para receber dados do cliente
 	byte[] send = new byte[1024]; // array de bytes para enviar dados para o cliente
 
-	public UdpSocketServer(DatagramSocket measureSocket) {
+	private DatagramPacket packet;
+
+	private byte[] buffer;
+
+	public UdpSocketServer(DatagramSocket measureSocket, DatagramPacket packet, byte[] buffer) {
 		this.measureSocket = measureSocket;
+		this.packet = packet;
+		this.buffer = buffer;
 	}
+	
 
 	@Override
 	public void run() {
 
 		try {
 
-			// cria um pacote para receber dados do cliente
-			DatagramPacket dataReceive = new DatagramPacket(receive, receive.length);
-
-			measureSocket.receive(dataReceive); // recebe os dados do cliente
-			// converte os dados recebidos em uma string
-
-			String message = new String(dataReceive.getData(), 0, dataReceive.getLength()).trim();
-			InetAddress enderecoClient = dataReceive.getAddress(); // obtém o endereço IP do cliente
-			int port = dataReceive.getPort(); // obtém o número da porta do cliente
+			String message = new String(packet.getData(), 0, packet.getLength()).trim();
+			InetAddress enderecoClient = packet.getAddress(); // obtém o endereço IP do cliente
+			int port = packet.getPort(); // obtém o número da porta do cliente
 			Pattern pattern = Pattern.compile("U\\d+,\\d+\\.\\d+,\\d{2}/\\d{2}/\\d{4}\\s\\d{2}:\\d{2}:\\d{2},\\d+");
 
 			Matcher match = pattern.matcher(message);

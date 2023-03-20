@@ -10,37 +10,28 @@ public class HttpSoc {
 	public static void main(String[] args) throws IOException {
 		DaoUser dao = new DaoUser();
 		int portTCP = 8922;
-
 		boolean on = true;
-
+		  DatagramSocket measureSocket = new DatagramSocket(8923);
 		try (ServerSocket serverSocket = new ServerSocket(portTCP)) {
 
-			System.out.println("Server listening on port " + portTCP);
+			System.out.println("Server listening on port" + portTCP);
+			System.out.println(InetAddress.getLocalHost().getHostAddress());
 
 			new Thread(() -> {
-				
-				DatagramSocket measureSocket = null;
-				try {
-					measureSocket = new DatagramSocket(portUDP);
-				} catch (SocketException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				
-
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				while (on) {
-
-					Thread threadTwo = new Thread(new UdpSocketServer(measureSocket));
-					threadTwo.start();
-
-				}
+			    while (on) {
+			     
+			        byte[] buffer = new byte[1024];
+			        DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+			        try {
+			        
+			            measureSocket.receive(packet);
+			           
+			        } catch (IOException e) {
+			            e.printStackTrace();
+			        }
+			        Thread threadTwo = new Thread(new UdpSocketServer(measureSocket, packet, buffer));
+			        threadTwo.start();
+			    }
 			}).start();
 
 			while (on) {
