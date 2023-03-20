@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/*Essa classe pode ser usada para armazenar e recuperar informações relacionadas a medidas de uso de energia, 
+ * e pode ser usada em aplicações que lidam com medição de uso de energia, por exemplo, 
+ * em sistema de faturamento de energia ou monitoramento de consumo de energia.*/
 public class Measure extends User implements Serializable {
 	private double summedConsumption = 0; // consumo total, sera somado junto com a implementação da lista
 	private boolean overConsumption = false;

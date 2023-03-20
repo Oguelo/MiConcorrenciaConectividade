@@ -46,7 +46,37 @@ public class DaoUser {
 		}
 		return null;
 	}
-
+	
+	
+	/*
+	 * O método addMeasure é utilizado para acrescentar uma medida de uso de
+	 * energia. Ele recebe como parâmetros o ID do usuário, o valor inicial de
+	 * consumo de energia, o dia e a hora do gasto da energia e um valor em
+	 * kilowatts-hora (kW.h).
+	 * 
+	 * 
+	 * Ele busca por uma medida de uso de energia que corresponda ao ID do usuário.
+	 * Se a medida existe, ele soma o novo consumo, o valor inicial, ao valor de
+	 * consumo somado já existente na medida. Depois ele divide o valor calculado
+	 * pelo número de valores históricos, se esse novo consumo é maior que 10% do
+	 * consumo inicial, a medida é marcada como tendo um consumo excessivo, caso
+	 * contrário, a medida é marcada como não tendo um consumo excessivo.
+	 * 
+	 * 
+	 * Depois de tudo isso, ele adiciona no vetor listUserContas a medida
+	 * encontrada, se ela já não existir no vetor.
+	 * 
+	 * 
+	 * Ao final, ele retorna 200 para dizer que o processo foi feito com sucesso. Se
+	 * a medida existir no vetor listUserContas, ele remove a medida que já
+	 * existe do vetor e adiciona novamente com os valores alterados.
+	 * 
+	 * 
+	 * Caso não exista retorna o codigo de erro 404 
+	 */
+	
+	
+	
 	public static synchronized int addMeasure(String userId, double initialValue, String dataHour, String data) {
 		Measure measure = searchMeasure(userId);
 		int dataInt = Integer.parseInt(data);
@@ -106,33 +136,3 @@ public class DaoUser {
 		
 
 }
-
-/*
- * public static Measure generateHistoric(String userId) { Measure historic =
- * searchMeasure(userId); if (historic == null) { return null; }else {
- * 
- * 
- * StringBuilder stringList = new StringBuilder(); for(String num :
- * historic.getHistoricListData()) { stringList.append(num).append("\n"); }
- * stringList.append("Soma Total de Consumo:" +historic.getSummedConsumption());
- * String retornoLista = stringList.toString();
- * 
- * return historic; }
- * 
- * }
- */
-
-/*
- * public static synchronized String addClient(User user) { if
- * (searchUser(user.getRegistration()) != null) { user.setRegistration("U" +
- * Double.toString((Math.random() * 1000000) + 1)); } listUserClients.add(user);
- * listUserContas.add(new Measure(user.getRegistration(), user.getName(), 0,
- * false, 0, new ArrayList<>(), new ArrayList<>())); return
- * user.getRegistration(); }
- */
-
-/*
- * public static synchronized User searchUser(String registration) { for (User
- * user : listUserClients) { if (user.getRegistration().equals(registration)) {
- * return user; } } return null; }
- */

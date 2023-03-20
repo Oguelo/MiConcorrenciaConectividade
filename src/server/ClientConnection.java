@@ -125,7 +125,23 @@ public class ClientConnection implements Runnable {
 
 	}
 
-	// Método que gera uma fatura para ser paga
+
+	/*
+	 * O método generateInvoice é usado para gerar uma conta de energia. Ele recebe
+	 * como parametros o objeto PrintWriter que será responsável pela impressão da
+	 * conta e uma String representando o ID do cliente.
+	 * 
+	 * 
+	 * O método faz uma consulta no objeto DaoUser na busca por medidas de energia
+	 * correspondentes ao ID recebido. Se a medida não existir, ele retorna uma
+	 * mensagem de erro de maneira segura usando o método codeReturn.
+	 * 
+	 * 
+	 * Se a measure existir, ele obtém os dados históricos da medida e constrói a
+	 * string que será utilizada para gerar a conta. Se a medida tiver um consumo
+	 * excessivo, ele alerta o usuário para reduz-lo, caso contrário, diz que o
+	 * consumo está controlado e continua.
+	 */
 
 	private static void generateInvoice(PrintWriter out, String id) throws IOException {
 		Measure invoice = DaoUser.searchMeasure(id);
@@ -148,7 +164,6 @@ public class ClientConnection implements Runnable {
 				answer += ("Seu Consumo Atual esta controlado, continue assim");
 			}
 			codeReturn(out, 200, Status.getMessage(200), answer);
-			invoice.setValorFatura(0);
 		}
 
 	}

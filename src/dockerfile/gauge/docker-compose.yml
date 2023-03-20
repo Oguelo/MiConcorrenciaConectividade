@@ -7,4 +7,6 @@ services:
         container_name: gauge-app	
         ports:
           - 8924:8923
-        network_mode: bridge
+        networks:
+           mynetwork:
+             driver: bridge

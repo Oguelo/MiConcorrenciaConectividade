@@ -10,6 +10,8 @@ public class Status {
 	public static final int NOT_FOUND = 404;
 	public static final int INTERNAL_SERVER_ERROR = 500;
 
+
+	//O método getMessage retorna uma mensagem de erro com base no status HTTP informado à requisição HTTP.
 	public static String getMessage(int status) {
 		if(status == 200) {
 			return "OK";

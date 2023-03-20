@@ -6,5 +6,11 @@ services:
     ports:
       - 8923:8923
       - 8922:8922
-    network_mode: bridge
-    
+    "insomnia":
+       container_name: "insomnia"
+       image: "insomnia"
+       networks:
+         - webnet
+
+networks:
+  webnet:

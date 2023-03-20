@@ -48,9 +48,9 @@ public class UdpSocketServer implements Runnable {
 				DaoUser.addMeasure(matricula, gaugeValue, dataHora, flag); // adiciona uma nova medição para o user
 																			// correspondente
 
-			} else if (!match.find()) { // se a mensagem recebida não tiver apenas 1 caractere
+			} else if (!match.find()) { // se a mensagem recebida tiver apenas 1 caractere que seria o ID
 
-				Measure confirmation = DaoUser.searchMeasure(message); // busca a medição do usuário correspondente
+				Measure confirmation = DaoUser.searchMeasure(message); // busca o id do usuário correspondente
 				if (confirmation != null) { // se a medição foi encontrada
 					send = "ok".getBytes(); // cria uma mensagem de resposta "ok"
 					sendData(send, send.length, enderecoClient, port); // envia a resposta para o cliente
