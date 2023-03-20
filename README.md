@@ -3,7 +3,7 @@
 
 - ``Java 18``
 - ``Eclipse IDEA``
--``Protocolo de rede TCP e UDP´´
+- ``Protocolo de rede TCP e UDP´´
 
 
 * [Introdução](#introdução)
