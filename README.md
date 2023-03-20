@@ -12,7 +12,7 @@
 * [Resultados](#resultados)
 
 
-Introdução
+## Introdução
   Um serviço público importante é o fornecimento de energia elétrica, pensando nisso, foi desenvolvido um prototipo para a medição e acompanhamento do consumo de energia de maneira remota.
   Este projeto foi desenvolvido para demonstrar uma alternativa a coleta de dados, que atualmente é feita de maneira manual, mas que no futuro poderá ser feita utilizando a tecnologia IoT, 
   onde os dados dos consumidores serão captados e salvos num servidor para que fiquem disponiveis online, assim os usuarios podem monitorar seu consumo de energia, gerar fatura, e observar o consumo
