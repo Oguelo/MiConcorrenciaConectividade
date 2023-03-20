@@ -20,7 +20,7 @@
 
 
 
-##Conceitos
+## Conceitos
  - Software: Programas que permitem executar funções específicas em um computador.
  - IoT: Internet das coisas, é uma rede de dispositivos conectados à internet que permitem a coleta e troca de informações.
  - Java: é uma linguagem de programação que é amplamente utilizada para desenvolver aplicações para a Internet e também para desenvolvimento de       aplicativos móveis, sendo uma das mais usadas por desenvolvedores no mundo.
