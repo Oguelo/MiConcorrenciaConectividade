@@ -1,5 +1,5 @@
 <h1 align="center"> Projeto Mi-Concorrencia e conectividade: Consumo de energia inteligente </h1>
-##  ✔️ Técnicas e tecnologias utilizadas
+## ✔️ Técnicas e tecnologias utilizadas
 
 - ``Java 18``
 - ``Eclipse IDEA``
