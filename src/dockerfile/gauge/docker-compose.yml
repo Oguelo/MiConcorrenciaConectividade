@@ -6,11 +6,5 @@ services:
         stdin_open: true
         container_name: gauge-app	
         ports:
-          - 8923:8923
-        networks:
-            mynetwork:
-              ipv4_address: 172.16.103.7
-        
-networks:
-   mynetwork:
-      name: docker-compose_mynetwork
+          - "8923:8923/udp"
+        network_mode: "host"

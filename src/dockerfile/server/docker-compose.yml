@@ -4,16 +4,6 @@ services:
     image: alexjrjr/app-server
     container_name: server-app
     ports:
-      - 8923:8923
-      - 8922:8922
-    networks:
-      mynetwork:
-        ipv4_address: 172.16.103.5
-        
-networks:
-  mynetwork:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.16.0.0/16
-    attachable: true
+      - "8923:8923/udp"
+      - "8922:8922/tcp"
+    network_mode: "host"

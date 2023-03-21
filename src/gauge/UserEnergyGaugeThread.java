@@ -4,6 +4,13 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+/**
+ * A classe UserEnergyGaugeThread representa um medidor de energia e permite que as medições sejam enviadas para um servidor
+ * em intervalos regulares. Esta classe implementa a interface Runnable e é executada como uma thread.
+ * 
+ * @author Alexjr
+ * @version 0.0.1
+ */
 
 public class UserEnergyGaugeThread extends Thread {
 	private static String matriculScanner;
@@ -14,7 +21,14 @@ public class UserEnergyGaugeThread extends Thread {
 	public UserEnergyGaugeThread(CounterUpdater updater) {
 		this.updater = updater;
 	}
-
+	/**
+	 * Metodo principal da classe UserEnergyGaugeThread, esta classe ira fazer a conexão do medidor com o sistema e permitira a passagem das medições para
+	 * o servidor por meio das threads
+	 * 
+	 * @param args argumentos de linha de comando (não utilizados)
+	 * @throws InterruptedException se a thread for interrompida enquanto estiver dormindo
+	 * @throws IOException se ocorrer um erro de entrada/saída
+	 */
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 		Scanner scanner = new Scanner(System.in);
