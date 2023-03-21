@@ -17,8 +17,8 @@ public class SendReceiveMed {
     public SendReceiveMed() throws UnknownHostException, SocketException {
         // Inicia o socket
         clientSocket = new DatagramSocket();
-        // Define o endereço: 127.0.0.1, onde 127.0.0.1 é o endereço IPv4 do computador
-        serverAddress = InetAddress.getByName("172.28.1.1");
+        // Define o endereço: 172.16.103.5, onde 172.16.103.5 é o endereço IPv4 do computador onde esta o servidor
+        serverAddress = InetAddress.getByName("172.16.103.5");
     }
     
     

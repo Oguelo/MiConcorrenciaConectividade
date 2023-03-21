@@ -6,12 +6,11 @@ services:
         stdin_open: true
         container_name: gauge-app	
         ports:
-          - 8924:8923
+          - 8923:8923
         networks:
             mynetwork:
-              ipv4_address: 172.28.1.2
+              ipv4_address: 172.16.103.7
         
 networks:
    mynetwork:
-      external:
-         name: server_mynetwork
+      name: docker-compose_mynetwork
