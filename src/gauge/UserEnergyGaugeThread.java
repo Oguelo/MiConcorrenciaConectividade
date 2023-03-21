@@ -22,6 +22,7 @@ public class UserEnergyGaugeThread extends Thread {
 		// Loop para solicitar a entrada da matrícula do servidor até que ela seja
 		// válida
 		do {
+			matriculScanner = null;
 			System.out.println("Digite o numero de matricula deste medidor:");
 			matriculScanner = scanner.nextLine();
 			if (matriculScanner != null) {
@@ -36,7 +37,7 @@ public class UserEnergyGaugeThread extends Thread {
 
 			while (validationOne == true) {
 				System.out.println("A atual bandeira de medição:" + CounterUpdater.getEdition());
-				System.out.print("Digite o novo valor que deseja(ou n para sair) :");
+				System.out.print("Digite o novo valor que deseja(ou n para sair):");
 				String input = scanner.nextLine();
 				if (input.equalsIgnoreCase("n")) {
 					// Quando o usuário digitar "n", o programa é encerrado após um minuto
@@ -71,26 +72,28 @@ public class UserEnergyGaugeThread extends Thread {
 		while (onMed) {
 
 			try {
-				
-				Thread.sleep(tempoDia); // Espera 20seg
-				
-				double gaugeValue = CounterUpdater.getGauge();
-				SendReceiveMed sendReceive = new SendReceiveMed();
-				// Constrói uma string com os dados da medição
-				LocalDateTime now = LocalDateTime.now();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-				String dataHora = now.format(formatter);
-				String medicao = matriculScanner + "," + gaugeValue + "," + dataHora + "," + flag;
-				sendReceive.sendMessage(medicao);
+				if(matriculScanner != null) {
+					Thread.sleep(tempoDia); // Espera 20seg
+					
+					double gaugeValue = CounterUpdater.getGauge();
+					SendReceiveMed sendReceive = new SendReceiveMed();
+					// Constrói uma string com os dados da medição
+					LocalDateTime now = LocalDateTime.now();
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+					String dataHora = now.format(formatter);
+					String medicao = matriculScanner + "," + gaugeValue + "," + dataHora + "," + flag;
+					sendReceive.sendMessage(medicao);
+					tempoMes += tempoDia;
+					if (tempoMes == 120 * 1000) {// dois minutos equivale a um mes
+						flag += 1;
+						tempoMes = 0;
+					}
+					if(flag == 12) {
+						flag = 1;
+					}
+				}
 				CounterUpdater.setGauge(0); // Reinicia o contador do medidor
-				tempoMes += tempoDia;
-				if (tempoMes == 120 * 1000) {// dois minutos equivale a um mes
-					flag += 1;
-					tempoMes = 0;
-				}
-				if(flag == 12) {
-					flag = 1;
-				}
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
