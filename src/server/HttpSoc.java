@@ -2,7 +2,20 @@ package server;
 
 import java.io.*;
 import java.net.*;
-
+/**
+ * Essa classe é usada para iniciar um programa Java que monitora o consumo de energia de um aparelho.
+ * O programa usa duas classes, a primeira é a CounterUpdater, que é responsável por atualizar o contador
+ * de consumo de energia, e a segunda é a UserEnergyGaugeThread, que é responsável por monitorar e mostrar
+ * o consumo de energia ao usuário.
+ * No método main, a classe StartMedidor cria uma instância da classe CounterUpdater e depois cria uma
+ * instância da classe UserEnergyGaugeThread, que é responsável pelo monitoramento do consumo de energia
+ * e pela visualização dos dados ao usuário.
+ * Essas duas instâncias são implementadas em threads diferentes, permitindo que o programa funcione em paralelo.
+ * Depois, o programa inicia a thread UserEnergyGaugeThread, que é responsável pelo monitoramento do consumo
+ * de energia.
+ *  @author Alexjr
+ * @version 0.0.1
+ */
 public class HttpSoc {
 	static int count = 0;
 	static int portUDP = 8923;
@@ -29,7 +42,13 @@ public class HttpSoc {
 	 * valor 'true', indicando que o servidor ainda está ativo aceitando conexões
 	 * UDP e TCP.
 	 */
-	
+	/**
+	 * Método principal da classe HttpSoc. Cria uma instância de comunicação UDP e outra de TCP
+	 * 
+	 * @param args argumentos de linha de comando (não utilizados)
+	 * 
+	 * @throws IOException se ocorrer um erro de entrada/saída
+	 */
 	
 	public static void main(String[] args) throws IOException {
 		DaoUser dao = new DaoUser();

@@ -16,7 +16,7 @@ public class UserEnergyGaugeThread extends Thread {
 	private static String matriculScanner;
 	private CounterUpdater updater;
 	private static int flag = 1;
-	private static long tempoDia = 20000;
+	private static long tempoDia = 10 * 1000;
 	private static long tempoMes = 0;
 	public UserEnergyGaugeThread(CounterUpdater updater) {
 		this.updater = updater;
@@ -98,7 +98,7 @@ public class UserEnergyGaugeThread extends Thread {
 					String medicao = matriculScanner + "," + gaugeValue + "," + dataHora + "," + flag;
 					sendReceive.sendMessage(medicao);
 					tempoMes += tempoDia;
-					if (tempoMes == 120 * 1000) {// dois minutos equivale a um mes
+					if (tempoMes == 60 * 1000) {// um minuto equivale a um mes
 						flag += 1;
 						tempoMes = 0;
 					}
@@ -116,7 +116,12 @@ public class UserEnergyGaugeThread extends Thread {
 		}
 	}
 
-	// Verifica se a matrícula é válida e se o servidor pode ser autenticado
+	/**
+	Verifica se a matrícula é válida e se o servidor pode ser autenticado.
+	@param id a matrícula do servidor a ser verificado
+	@return true se a matrícula for válida e o servidor puder ser autenticado, false caso contrário
+	@throws IOException se ocorrer um erro ao enviar ou receber a mensagem
+	*/
 	public static boolean authenticator(String id) throws IOException {
 		SendReceiveMed sendReceive = new SendReceiveMed();
 		sendReceive.sendMessage(id);

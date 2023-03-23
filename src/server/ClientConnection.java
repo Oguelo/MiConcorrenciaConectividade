@@ -74,13 +74,7 @@ public class ClientConnection implements Runnable {
 						codeReturn(out, 500, Status.getMessage(500), Status.getMessage(500));
 					}
 
-				} else if (parts.length == 3 && parts[1].equals("login")) {
-					String id = parts[2];
-					authenticator(out, id);
-				} else {
-					// Retorna código de erro 400 se o endpoint não é válido
-					codeReturn(out, 400, Status.getMessage(400), Status.getMessage(400));
-				}
+				} 
 			} else {
 				// Retorna código de erro 400 se a requisição não é do tipo GET
 				codeReturn(out, 400, Status.getMessage(400), Status.getMessage(400));
@@ -89,19 +83,14 @@ public class ClientConnection implements Runnable {
 		}
 	}
 
-	private void authenticator(PrintWriter out, String id) {
-		Measure idValid = DaoUser.searchMeasure(id);
-		if (idValid == null) {
-			// Retorna código de erro 404 se não há histórico para o usuário com o ID
-			// fornecido
-			codeReturn(out, 404, Status.getMessage(404), Status.getMessage(404));
-		} else {
-			codeReturn(out, 200, Status.getMessage(200), "ID Conectado:" + id);
-		}
+	
 
-	}
-
-	// Método que retorna o histórico de consumo do usuário com o ID fornecido
+	 /**
+     * Este metodo retorna o historico do usuario caso ele solicite
+     *
+     *@param out para envio da resposta
+     * @param id identificação do usuario a ser buscada
+     */
 	private static void viewHistory(PrintWriter out, String id) throws IOException {
 
 		Measure historic = DaoUser.searchMeasure(id);
@@ -113,12 +102,24 @@ public class ClientConnection implements Runnable {
 			// Monta a resposta com o histórico de consumo e o consumo total do usuário com
 			// o ID fornecido
 			String answer = ("ID:" + id + "\n");
+			if (historic.getOverConsumption() == true) {
+				answer +=("====================================================================================");
+				answer += ("- Seu Consumo Atual esta Alto, diminua o consumo para que sua proxima fatura não venha alta\n");
+				answer +=("====================================================================================");
+			} else {
+				answer +=("====================================================================================");
+				answer += ("- Seu Consumo Atual esta controlado, continue assim\n");
+				answer +=("====================================================================================");
+			}
+			answer +=("************************************************************************************");
+			answer += ("- Consumo Total:" + historic.getSummedConsumption() + "\n");
+			answer +=("************************************************************************************");
 			StringBuilder sb = new StringBuilder();
 			for (String str : historic.getHistoricListData()) {
 				sb.append(str + "\n");
 			}
 			answer += sb;
-			answer += ("Consumo Total:" + historic.getSummedConsumption() + "\n");
+			
 			// Retorna a resposta com código de sucesso 200
 			codeReturn(out, 200, Status.getMessage(200), answer);
 		}
@@ -126,22 +127,13 @@ public class ClientConnection implements Runnable {
 	}
 
 
-	/*
-	 * O método generateInvoice é usado para gerar uma conta de energia. Ele recebe
-	 * como parametros o objeto PrintWriter que será responsável pela impressão da
-	 * conta e uma String representando o ID do cliente.
-	 * 
-	 * 
-	 * O método faz uma consulta no objeto DaoUser na busca por medidas de energia
-	 * correspondentes ao ID recebido. Se a medida não existir, ele retorna uma
-	 * mensagem de erro de maneira segura usando o método codeReturn.
-	 * 
-	 * 
-	 * Se a measure existir, ele obtém os dados históricos da medida e constrói a
-	 * string que será utilizada para gerar a conta. Se a medida tiver um consumo
-	 * excessivo, ele alerta o usuário para reduz-lo, caso contrário, diz que o
-	 * consumo está controlado e continua.
-	 */
+
+	 /**
+    * Este metodo retorna a fatura do usuario caso ele solicite
+    *
+    *@param out para envio da resposta
+    * @param id identificação do usuario a ser buscada
+    */
 
 	private static void generateInvoice(PrintWriter out, String id) throws IOException {
 		Measure invoice = DaoUser.searchMeasure(id);
@@ -156,18 +148,18 @@ public class ClientConnection implements Runnable {
 				sb.append(str + "\n");
 			}
 			answer += sb;
-	
-
-			if (invoice.getOverConsumption() == true) {
-				answer += ("Seu Consumo Atual esta Alto, diminua o consumo para que sua proxima fatura não venha alta");
-			} else {
-				answer += ("Seu Consumo Atual esta controlado, continue assim");
-			}
 			codeReturn(out, 200, Status.getMessage(200), answer);
 		}
 
 	}
-
+	 /**
+	    * Este metodo retorna a fatura do usuario caso ele solicite
+	    *
+	    *@param out para envio da resposta
+	    * @param i codigo de identificação de retorno da requisição
+	    * @param status messagem de conclusão da requisição
+	    * @param answer resposta da requisição
+	    */
 	private static void codeReturn(PrintWriter out, int i, String status, String answer) {
 		out.println("HTTP/1.1 " + i + " " + status + "\r\n");
 		out.println("Content-Type:text/plain");

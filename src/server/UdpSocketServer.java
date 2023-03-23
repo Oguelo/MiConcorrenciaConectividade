@@ -6,7 +6,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+/**
+ *Esta classe ira tratar os dados enviados pelo UDP
+ *  @author Alexjr
+ * @version 0.0.1
+ */
 public class UdpSocketServer implements Runnable {
 	private DatagramSocket measureSocket; // socket UDP para a comunicação
 
@@ -24,7 +28,9 @@ public class UdpSocketServer implements Runnable {
 		this.buffer = buffer;
 	}
 	
-
+	/**
+	 * Método responsável por executar as operações necessárias ao receber uma mensagem de um cliente.
+	*/
 	@Override
 	public void run() {
 
@@ -65,7 +71,15 @@ public class UdpSocketServer implements Runnable {
 		}
 	}
 
-	// método para enviar dados para o cliente
+	/**
+
+	Envia dados para o cliente por meio de um DatagramPacket.
+	@param resposta um array de bytes contendo a resposta a ser enviada
+	@param length o tamanho da resposta a ser enviada
+	@param enderecoClient o endereço IP do cliente para o qual enviar a resposta
+	@param port a porta do cliente para o qual enviar a resposta
+	@throws IOException se ocorrer um erro de entrada/saída durante o envio dos dados
+	*/
 	private void sendData(byte[] resposta, int length, InetAddress enderecoClient, int port) throws IOException {
 		DatagramPacket responsePacket = new DatagramPacket(resposta, resposta.length, enderecoClient, port);
 		measureSocket.send(responsePacket); // envia os dados para o cliente
