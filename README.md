@@ -1,6 +1,6 @@
 <h1 align="center"> Projeto Mi-Concorrencia e conectividade: Consumo de energia inteligente </h1>
 
-#  ✔️ Técnicas e tecnologias utilizadas
+##  ✔️ Técnicas e tecnologias utilizadas
 
 - ``Java 18``
 - ``Eclipse IDEA``
@@ -42,7 +42,7 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 # Metodologia
     
 - Para que este trabalho fosse concretizado, houve a necessidade de utilizar dois protocolos de redes, UDP e TCP. Na comunicação entre medidor/servidor, foi utilizado o protocolo UDP, pois é frequentemente utilizado para aplicações que necessitam de uma transmissão de dados rápida e com baixa latência, como é o caso do envio de dados de um medidor em tempo real, porque o UDP não estabelece uma conexão antes de enviar os dados, o que o torna mais rápido e leve que outros protocolos como o TCP. Além disso, o UDP não faz retransmissão de pacotes perdidos, no caso de transmissões de dados de medidores, não há necessidade de garantir a entrega de todos os pacotes, pois os dados são constantemente atualizados e novas medições serão feitas em breve. Assim, o uso do UDP permite que a transmissão de dados ocorra com baixa latência e sem sobrecarregar a rede com retransmissões desnecessárias, no caso do pbl utilizei a porta 8923 para enviar os dados por meio de uma string que continha todas as informações necessarias como id do medidor, data da medição, medição em khw e uma flag que iria informar o mes da medição.
-- Para a construção da comunicação Servidor/Cliente, foi usado o protocolo TCP que é comumente usado em processos que necessitam de confiabilidade, como é o caso da passagens de transmissão de dados que seria feita para o usuario após a solicitação, utilizando requisições do tipo HTTP no padrão da API REST, essa comunicação foi feita utilizando metodo "GET",assim utilizando o Software insomnia, pude fazer a comunicação com o servidor e gerar as requisições que seriam o historico e fatura do usuario por meio da passagem de um link com o ip, porta(8922) e endpoints.
+- Para a construção da comunicação Servidor/Cliente, foi usado o protocolo TCP que é comumente usado em processos que necessitam de confiabilidade, como é o caso da passagens de transmissão de dados que seria feita para o usuario após a solicitação, utilizando requisições do tipo HTTP no padrão da API REST, essa comunicação foi feita utilizando metodos "GET",assim utilizando o Software insomnia, pude fazer a comunicação com o servidor e gerar as requisições que seriam o historico(que engloba, o acompanhamento das medições e o aviso de consumo excessivo) e fatura do usuario por meio da passagem de um link com o ip, porta(8922) e endpoints.
     ## Exemplo do link utilizado na requisição
         http://172.16.103.3:8922/generateinvoice/U40028924
     ## Exemplo de resposta dessa requisição
@@ -58,15 +58,15 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 
     ## Multiplos clientes
 * Para que a aplicação possibilitasse o uso de multiplos clientes e multiplos medidores ativos, foi necessario a implementação do uso de threads, elas foram uteis em alguns pontos do codigo fonte, dentre eles:
-* - Medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor 
-* - Envio dos dados medidos do medidor para o servidor(medidor): essa classe trabalha nos dados que serão enviados para o servidor, num periodo de 1 min ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag
-* - Possibilitar a conexão de multiplos clientes e medidores(servidor): Essas threads ficaram responsaveis por receberem requisições de clientes e medidores e trata-las no servidor 
+* - Medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor quando solicitado, assim existe a possibilidade da escalação para outros cenarios.
+* - Envio dos dados medidos do medidor para o servidor(medidor): essa thread trabalha nos dados que serão enviados para o servidor, num periodo de 1 min(do qual pode ser alterado) ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag e a cada 10 seg envia dados ao servidor e apos 1 min essa thread "troca" o mês.
+* - Possibilitar a conexão de multiplos clientes e medidores(servidor): Essas threads ficaram responsaveis por receberem requisições de clientes e medidores e trata-las no servidor a thread UDP permanece aberta para o medidor por conta das transmissões continuas e a de TCP fecha após cada solicitação. O medidor ira mandar os dados supracitados e o servidor ira checa-los por meio de um parser, e assim ira adicionar medições no servidor e ele ira salvar nas listas para que seja solicitado pelo cliente em algum momento.
 
 ---
-
+    ## Cliente
+* O cliente será representado pelo insomnia, o software enviara as requisições, das quais é possivel acompanhar o consumo por meio da busca pelo historico,onde é possivel ver o consumo unitario, o consumo total, e ser alertado se o consumo esta alto, e na geração de fatura é possivel ver as faturas geradas a cada mês e o seu valor
 # Resultados 
-    
-    O projeto
+* O projeto esta funcional, ele cumpre todos os requisitos que foram expressos no barema, mas que podem ser otimizados, o medidor e servidor podem ser atualizados para receber mensagem e requisições no padrão json por ser comumente usado em varias outras linguagens, e o medidor pode ser editado para caso seja usado em um cenario mais realista, onde o tempo de envio deve ser mais curto para que não haja sobrecarga de um processador que deve ser mais simples, e para que os dados que possam ser perdidos não tenham tanta influencia na medição final, e tambem uma interface de cliente é um bom substituto do insomnia
 
 
 
