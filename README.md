@@ -42,9 +42,30 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 # Metodologia
     
 - Para que este trabalho fosse concretizado, houve a necessidade de utilizar dois protocolos de redes, UDP e TCP. Na comunicação entre medidor/servidor, foi utilizado o protocolo UDP, pois é frequentemente utilizado para aplicações que necessitam de uma transmissão de dados rápida e com baixa latência, como é o caso do envio de dados de um medidor em tempo real, porque o UDP não estabelece uma conexão antes de enviar os dados, o que o torna mais rápido e leve que outros protocolos como o TCP. Além disso, o UDP não faz retransmissão de pacotes perdidos, no caso de transmissões de dados de medidores, não há necessidade de garantir a entrega de todos os pacotes, pois os dados são constantemente atualizados e novas medições serão feitas em breve. Assim, o uso do UDP permite que a transmissão de dados ocorra com baixa latência e sem sobrecarregar a rede com retransmissões desnecessárias, no caso do pbl utilizei a porta 8923 para enviar os dados por meio de uma string que continha todas as informações necessarias como id do medidor, data da medição, medição em khw e uma flag que iria informar o mes da medição.
-- Para a construção da comunicação Servidor/Cliente, foi usado o protocolo TCP que é comumente usado em processos que necessitam de confiabilidade, como é o caso da passagens de transmissão de dados que seria feita para o usuario após a solicitação, utilizando requisições do tipo HTTP no padrão da API REST, essa comunicação foi feita utilizando metodo "GET",assim utilizando o Software insomnia, pude fazer a comunicação com o servidor e gerar as requisições que seriam o historico e fatura do usuario por meio da passagem de um link com o ip, porta(8922) e endpoints que seriam necessariamente a opção desejada pelo cliente e seu ID, essa  passagem de informações é dividida em Strings onde cada uma sera analisada separadamente para encontrar o metodo e conferir as informações do cliente.
+- Para a construção da comunicação Servidor/Cliente, foi usado o protocolo TCP que é comumente usado em processos que necessitam de confiabilidade, como é o caso da passagens de transmissão de dados que seria feita para o usuario após a solicitação, utilizando requisições do tipo HTTP no padrão da API REST, essa comunicação foi feita utilizando metodo "GET",assim utilizando o Software insomnia, pude fazer a comunicação com o servidor e gerar as requisições que seriam o historico e fatura do usuario por meio da passagem de um link com o ip, porta(8922) e endpoints.
     ## Exemplo do link utilizado na requisição
         http://172.16.103.3:8922/generateinvoice/U40028924
+    ## Exemplo de resposta dessa requisição
+        Content-Type:text/plain
+        Content-Length: 110
+
+        ID:U40028924
+        -Mes:1 Fatura(R$):24.00
+        -Mes:2 Fatura(R$):20.00
+        Seu Consumo Atual esta controlado, continue assim
+    ## Analise feita
+        Os endpoints das requisições seriam analisados após o recebimento do servidor, seriam necessariamente a opção desejada pelo cliente e seu ID, essa  passagem de informações é dividida em Strings onde cada uma é analisada separadamente para encontrar o metodo e conferir as informações do cliente, assim a API serviu na analise e validação das requisições para após isso a busca de respostas no metodos  
+    ## Multiplos clientes
+        Para que a aplicação possibilitasse o uso de multiplos clientes e multiplos medidores ativos, foi necessario a implementação do uso de threads, elas foram uteis em alguns pontos do codigo fonte, dentre eles:
+        - medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor 
+        - envio dos dados medidos do medidor para o servidor(medidor): essa classe trabalha nos dados que serão enviados para o servidor, num periodo de 1 min ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag
+        - possibilitar a conexão de multiplos clientes e medidores(servidor): Essas threads ficaram responsaveis por receberem requisições de clientes e medidores e trata-las no servidor 
+
+---
+
+# Resultados 
+    
+    O projeto
 
 
 
