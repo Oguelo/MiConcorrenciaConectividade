@@ -56,7 +56,7 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
     ## Analise feita
 * Os endpoints das requisições seriam analisados após o recebimento do servidor, seriam necessariamente a opção desejada pelo cliente e seu ID, essa  passagem de informações é dividida em Strings onde cada uma é analisada separadamente para encontrar o metodo e conferir as informações do cliente, assim a API serviu na analise e validação das requisições para após isso a busca de respostas no metodos
 
-    ## Multiplos clientes
+    ## Multiplos clientes e medidores
 * Para que a aplicação possibilitasse o uso de multiplos clientes e multiplos medidores ativos, foi necessario a implementação do uso de threads, elas foram uteis em alguns pontos do codigo fonte, dentre eles:
 * - Medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor quando solicitado, assim existe a possibilidade da escalação para outros cenarios.
 * - Envio dos dados medidos do medidor para o servidor(medidor): essa thread trabalha nos dados que serão enviados para o servidor, num periodo de 1 min(do qual pode ser alterado) ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag e a cada 10 seg envia dados ao servidor e apos 1 min essa thread "troca" o mês.
