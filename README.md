@@ -54,12 +54,13 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
         -Mes:2 Fatura(R$):20.00
         Seu Consumo Atual esta controlado, continue assim
     ## Analise feita
-        Os endpoints das requisições seriam analisados após o recebimento do servidor, seriam necessariamente a opção desejada pelo cliente e seu ID, essa  passagem de informações é dividida em Strings onde cada uma é analisada separadamente para encontrar o metodo e conferir as informações do cliente, assim a API serviu na analise e validação das requisições para após isso a busca de respostas no metodos  
+* Os endpoints das requisições seriam analisados após o recebimento do servidor, seriam necessariamente a opção desejada pelo cliente e seu ID, essa  passagem de informações é dividida em Strings onde cada uma é analisada separadamente para encontrar o metodo e conferir as informações do cliente, assim a API serviu na analise e validação das requisições para após isso a busca de respostas no metodos
+
     ## Multiplos clientes
-        Para que a aplicação possibilitasse o uso de multiplos clientes e multiplos medidores ativos, foi necessario a implementação do uso de threads, elas foram uteis em alguns pontos do codigo fonte, dentre eles:
-        - medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor 
-        - envio dos dados medidos do medidor para o servidor(medidor): essa classe trabalha nos dados que serão enviados para o servidor, num periodo de 1 min ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag
-        - possibilitar a conexão de multiplos clientes e medidores(servidor): Essas threads ficaram responsaveis por receberem requisições de clientes e medidores e trata-las no servidor 
+* Para que a aplicação possibilitasse o uso de multiplos clientes e multiplos medidores ativos, foi necessario a implementação do uso de threads, elas foram uteis em alguns pontos do codigo fonte, dentre eles:
+* - Medição continua do consumo de energia (medidor): onde essa thread fica responsavel por atualizar e enviar as medições para a classe que formata e destina os dados para o servidor 
+* - Envio dos dados medidos do medidor para o servidor(medidor): essa classe trabalha nos dados que serão enviados para o servidor, num periodo de 1 min ela envia dados que equivalem a um mes em um cenario ficticio, assim ela monta uma string com os dados que serão enviados, dentre eles, data, medição, id, e flag
+* - Possibilitar a conexão de multiplos clientes e medidores(servidor): Essas threads ficaram responsaveis por receberem requisições de clientes e medidores e trata-las no servidor 
 
 ---
 
