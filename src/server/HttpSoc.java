@@ -45,7 +45,7 @@ public class HttpSoc {
 	/**
 	 * Método principal da classe HttpSoc. Cria uma instância de comunicação UDP e outra de TCP
 	 * 
-	 * @param args argumentos de linha de comando (não utilizados)
+	 * @param  args -  argumentos de linha de comando (não utilizados)
 	 * 
 	 * @throws IOException se ocorrer um erro de entrada/saída
 	 */

@@ -25,7 +25,7 @@ public class UserEnergyGaugeThread extends Thread {
 	 * Metodo principal da classe UserEnergyGaugeThread, esta classe ira fazer a conexão do medidor com o sistema e permitira a passagem das medições para
 	 * o servidor por meio das threads
 	 * 
-	 * @param args argumentos de linha de comando (não utilizados)
+	 * @param  args - argumentos de linha de comando (não utilizados)
 	 * @throws InterruptedException se a thread for interrompida enquanto estiver dormindo
 	 * @throws IOException se ocorrer um erro de entrada/saída
 	 */
@@ -118,7 +118,7 @@ public class UserEnergyGaugeThread extends Thread {
 
 	/**
 	Verifica se a matrícula é válida e se o servidor pode ser autenticado.
-	@param id a matrícula do servidor a ser verificado
+	@param  id - a matrícula do servidor a ser verificado
 	@return true se a matrícula for válida e o servidor puder ser autenticado, false caso contrário
 	@throws IOException se ocorrer um erro ao enviar ou receber a mensagem
 	*/

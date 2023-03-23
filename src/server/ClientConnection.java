@@ -88,8 +88,8 @@ public class ClientConnection implements Runnable {
 	 /**
      * Este metodo retorna o historico do usuario caso ele solicite
      *
-     *@param out para envio da resposta
-     * @param id identificação do usuario a ser buscada
+     *@param  out - para envio da resposta
+     * @param  id - identificação do usuario a ser buscada
      */
 	private static void viewHistory(PrintWriter out, String id) throws IOException {
 
@@ -131,8 +131,8 @@ public class ClientConnection implements Runnable {
 	 /**
     * Este metodo retorna a fatura do usuario caso ele solicite
     *
-    *@param out para envio da resposta
-    * @param id identificação do usuario a ser buscada
+    *@param out - out para envio da resposta
+    * @param  id - identificação do usuario a ser buscada
     */
 
 	private static void generateInvoice(PrintWriter out, String id) throws IOException {
@@ -155,10 +155,10 @@ public class ClientConnection implements Runnable {
 	 /**
 	    * Este metodo retorna a fatura do usuario caso ele solicite
 	    *
-	    *@param out para envio da resposta
-	    * @param i codigo de identificação de retorno da requisição
-	    * @param status messagem de conclusão da requisição
-	    * @param answer resposta da requisição
+	    *@param	 out - para envio da resposta
+	    * @param  i - codigo de identificação de retorno da requisição
+	    * @param  status - messagem de conclusão da requisição
+	    * @param  answer - resposta da requisição
 	    */
 	private static void codeReturn(PrintWriter out, int i, String status, String answer) {
 		out.println("HTTP/1.1 " + i + " " + status + "\r\n");

@@ -43,7 +43,7 @@ public class SendReceiveMed {
 	 * pode lançar uma exceção de IOException se alguma falha de rede ocorre durante
 	 * a transferência.
 	 * 
-	 * @param message A mensagem a ser enviada.
+	 * @param  message - A mensagem a ser enviada.
 	 * 
 	 * @throws IOException Caso ocorra uma exceção durante a transferência.
 	 */

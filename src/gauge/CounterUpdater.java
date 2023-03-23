@@ -32,7 +32,7 @@ public class CounterUpdater implements Runnable {
     /**
      * Define o valor do medidor de energia.
      *
-     * @param gauge o valor a ser definido para o medidor de energia
+     * @param  gauge - o valor a ser definido para o medidor de energia
      */
 	public static void setGauge(double gauge) {
 		CounterUpdater.gauge = gauge;
@@ -50,7 +50,7 @@ public class CounterUpdater implements Runnable {
     /**
      * Define o valor atualizado do medidor de energia.
      *
-     * @param gaugeValue o valor atualizado a ser definido para o medidor de energia
+     * @param  gaugeValue - o valor atualizado a ser definido para o medidor de energia
      */
 	public static void setGaugeValue(double gaugeValue) {
 		CounterUpdater.gaugeValue = gaugeValue;
@@ -68,7 +68,7 @@ public class CounterUpdater implements Runnable {
     /**
      * Define a quantidade de energia a ser adicionada a cada atualização do medidor de energia.
      *
-     * @param edition a quantidade de energia a ser adicionada a cada atualização do medidor de energia
+     * @param  edition - a quantidade de energia a ser adicionada a cada atualização do medidor de energia
      */
 	public static void setEdition(double edition) {
 		CounterUpdater.edition = edition;
@@ -86,7 +86,7 @@ public class CounterUpdater implements Runnable {
     /**
      * Define se a thread de atualização do medidor de energia deve ser executada.
      *
-     * @param running true se a thread deve ser executada, false caso contrário
+     * @param  running - true se a thread deve ser executada, false caso contrário
      */
 	public static void setRunning(boolean running) {
 		CounterUpdater.running = running;

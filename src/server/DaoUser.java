@@ -39,7 +39,7 @@ public class DaoUser {
 	
 	/**
 	 * Define a lista de medições cadastradas.
-	 * @param listUserContas Nova lista de usuários cadastrados.
+	 * @param  listUserContas -  Nova lista de usuários cadastrados.
 	*/
 	public static synchronized void setListUserContas(ArrayList<Measure> listUserContas) {
 		DaoUser.listUserContas = listUserContas;
@@ -54,7 +54,7 @@ public class DaoUser {
 	}
 	/**
 	 * Define a lista de usuários cadastrados.
-	 * @param listUserClients Nova lista de usuários cadastrados.
+	 * @param  listUserClients - Nova lista de usuários cadastrados.
 	*/
 	public static synchronized void setListUserClients(ArrayList<User> listUserClients) {
 		DaoUser.listUserClients = listUserClients;
@@ -62,7 +62,7 @@ public class DaoUser {
 	 /**
      *	metodo que busca o usuario no sistema e retorna o objeto caso encontrado 
      *
-     * @param uregistration ID do usuário.
+     * @param  registration -  ID do usuário.
      * @return measure objeto encontrado
      * @return null objeto nao encontrado
      */
@@ -114,10 +114,10 @@ public class DaoUser {
 	 * consumo de energia, o dia e a hora do gasto da energia e um valor em
 	 * kilowatts-hora (kW.h).
      *
-     * @param userId ID do usuário.
-     * @param initialValue Valor da medição.
-     * @param dataHour Hora em que a medição foi feita.
-     * @param data Valor da medição.
+     * @param  userId - ID do usuário.
+     * @param  initialValue - Valor da medição.
+     * @param  dataHour -  Hora em que a medição foi feita.
+     * @param  data - Valor da medição.
      * @return 200 retorno para objeto adicionado
      * @return 404	retorno para objeto não encontrado
      */

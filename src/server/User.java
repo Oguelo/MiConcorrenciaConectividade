@@ -35,7 +35,7 @@ public class User implements Serializable{
     /**
      * Define o id do usuario
      *
-     * @param registration o id do usuario
+     * @param  registration - o id do usuario
      */
     public void setRegistration(String registration) {
         this.registration = registration;
@@ -51,7 +51,7 @@ public class User implements Serializable{
     /**
      * Define o nome do usuario
      *
-     * @param name o id do usuario
+     * @param name - o id do usuario
      */
     public void setName(String name) {
         this.name = name;

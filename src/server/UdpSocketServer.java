@@ -74,10 +74,10 @@ public class UdpSocketServer implements Runnable {
 	/**
 
 	Envia dados para o cliente por meio de um DatagramPacket.
-	@param resposta um array de bytes contendo a resposta a ser enviada
-	@param length o tamanho da resposta a ser enviada
-	@param enderecoClient o endereço IP do cliente para o qual enviar a resposta
-	@param port a porta do cliente para o qual enviar a resposta
+	@param  resposta - um array de bytes contendo a resposta a ser enviada
+	@param  length - o tamanho da resposta a ser enviada
+	@param  enderecoClient - o endereço IP do cliente para o qual enviar a resposta
+	@param  port - a porta do cliente para o qual enviar a resposta
 	@throws IOException se ocorrer um erro de entrada/saída durante o envio dos dados
 	*/
 	private void sendData(byte[] resposta, int length, InetAddress enderecoClient, int port) throws IOException {

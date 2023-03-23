@@ -16,7 +16,7 @@ public class Status {
 
 	/**
 	 * O método getMessage retorna uma mensagem de erro com base no status HTTP informado à requisição HTTP.
-	 * @param status o código de status HTTP para o qual se deseja obter a mensagem de erro correspondente
+	 * @param  status - o código de status HTTP para o qual se deseja obter a mensagem de erro correspondente
 	 * @return a mensagem de erro correspondente ao código de status HTTP informado
 	 */
 	public static String getMessage(int status) {
@@ -45,7 +45,7 @@ public class Status {
 
 /**
  * O método isError retorna true se o código de status HTTP informado corresponder a um erro.
- * @param status o código de status HTTP para o qual se deseja verificar se corresponde a um erro
+ * @param int status - o código de status HTTP para o qual se deseja verificar se corresponde a um erro
  * @return true se o código de status HTTP informado corresponder a um erro, false caso contrário
  */
 	public static boolean isError(int status) {

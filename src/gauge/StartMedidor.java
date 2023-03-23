@@ -22,7 +22,7 @@ public class StartMedidor {
 	 * Método principal da classe StartMedidor. Cria uma instância de CounterUpdater e UserEnergyGaugeThread,
 	 * e inicia a thread UserEnergyGaugeThread para monitorar o consumo de energia.
 	 * 
-	 * @param args argumentos de linha de comando (não utilizados)
+	 * @param  args - argumentos de linha de comando (não utilizados)
 	 * @throws InterruptedException se a thread for interrompida enquanto estiver dormindo
 	 * @throws IOException se ocorrer um erro de entrada/saída
 	 */

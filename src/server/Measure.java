@@ -39,7 +39,12 @@ public class Measure extends User implements Serializable {
 	public double getSummedConsumption() {
 		return summedConsumption;
 	}
-
+	/**
+     * define a soma do consumo do usuario
+     *
+     * @param  summedConsumption - a lista que tera as faturas
+     */
+	
 	public void setSummedConsumption(double summedConsumption) {
 		this.summedConsumption = summedConsumption;
 	}
@@ -55,7 +60,7 @@ public class Measure extends User implements Serializable {
 	/**
      * Define se o consumo do usuario esta alto ou normal
      *
-     * @param historicListData a lista que tera as faturas
+     * @param  overConsumption - a variavel que ira salvar se o consumo esta alto ou normal 
      */
 	public void setoverconsumption(boolean overConsumption) {
 		this.overConsumption = overConsumption;
@@ -71,7 +76,7 @@ public class Measure extends User implements Serializable {
 	 /**
      * Define os valores da fatura do cliente
      *
-     * @param historicListData a lista que tera as faturas
+     * @param   valorMes - a lista que tera as faturas
      */
 	public void setHistoricList(ArrayList<String> valorMes) {
 		this.historicList = valorMes;
@@ -87,6 +92,12 @@ public class Measure extends User implements Serializable {
 		return historicListData;
 	}
 	
+	
+	/**
+     *	Define os valores de consumo 
+     *
+     * @param  historicListData -  guarda os consumos unitarios de cada mes numa lista
+     */
 	public void setHistoricListData(ArrayList<String> historicListData) {
 		this.historicListData = historicListData;
 	}
@@ -101,7 +112,7 @@ public class Measure extends User implements Serializable {
 	 /**
      * Define o valor da fatura somada
      *
-     * @param valorFatura define o valor somado da fatura
+     * @param  valorFatura - define o valor somado da fatura
      */
 	public void setValorFatura(double valorFatura) {
 		this.valorFatura = valorFatura;
@@ -117,7 +128,7 @@ public class Measure extends User implements Serializable {
 	 /**
      * Define o valor  do mês da medição do medidor
      *
-     * @param flag bandeira para definir o mes de medição do medidor
+     * @param  flag - bandeira para definir o mes de medição do medidor
      */
 	public void setFlag(int flag) {
 		this.flag = flag;
