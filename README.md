@@ -40,7 +40,7 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
  ## Executando o arquivo jar do medidor:
 
         java -jar StartMedidor-jar-with-dependencies.jar
-        * em seguida ao iniciar será necessario definir a matricula do medidor, existem algumas matriculas existentes no servidor (U40029823, U40028924, U40028925) 
+* Em seguida ao iniciar será necessario definir a matricula do medidor, existem algumas matriculas existentes no servidor (U40029823, U40028924, U40028925) 
 
         
 
