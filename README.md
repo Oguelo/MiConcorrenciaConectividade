@@ -39,8 +39,8 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
  ## Executando o arquivo jar do medidor:
 
         java -jar StartMedidor-jar-with-dependencies.jar
-* Em seguida ao iniciar será necessario definir a matricula do medidor, existem algumas matriculas existentes no servidor (U40029823, U40028924, U40028925). se o servidor/medidor for testado em uma maquina local ou qualquer maquina diferente da que eu escolhi no portainer, primeiramente o arquivo MiConcorrenciaConectividade/src/gauge
-/SendReceiveMed.java deverá ter a variavel serverAdress do metodo SendReceiveMed(), alterada para o ip desejado, a maquina que foi utilizada em questão é a de ip 172.16.103.3
+* Em seguida ao iniciar será necessario definir a matricula do medidor, existem algumas matriculas existentes no servidor (U40029823, U40028924, U40028925). se o servidor/medidor for testado em uma maquina local ou qualquer maquina diferente da que eu escolhi no portainer, primeiramente o arquivo [(MiConcorrenciaConectividade/src/gauge
+/SendReceiveMed.java](https://github.com/Oguelo/MiConcorrenciaConectividade/blob/versão-correta/src/gauge/SendReceiveMed.java))  deverá ter a variavel serverAdress do metodo SendReceiveMed(), alterada para o ip desejado, a maquina que foi utilizada em questão é a de ip 172.16.103.3
 
         
 
