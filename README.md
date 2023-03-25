@@ -30,9 +30,17 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 
 ---
 # Instalação do projeto
-  ## Executando o arquivo jar do medidor:
+
+  O projeto pode ser executado no portainer, ao salvar o arquivo docker-compose.yaml(MiConcorrenciaConectividade/src/dockerfile
+/gauge/ e MiConcorrenciaConectividade/src/dockerfile
+/server/) na aba de stacks.
+  ## Executando o arquivo jar no servidor
+        Basta startar o container
+        
+ ## Executando o arquivo jar do medidor:
 
         java -jar StartMedidor-jar-with-dependencies.jar
+        em seguida ao iniciar será necessario definir a matricula do medidor, existem algumas matriculas existentes no servidor (U40029823, U40028924, U40028925) 
 
         
 
