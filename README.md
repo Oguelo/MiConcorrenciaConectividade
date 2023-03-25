@@ -32,9 +32,7 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 ---
 # Instalação do projeto
 
-  O projeto pode ser executado no portainer, ao salvar o arquivo docker-compose.yaml (MiConcorrenciaConectividade/src/dockerfile
-/gauge/ e MiConcorrenciaConectividade/src/dockerfile
-/server/) na aba de stacks.
+  O projeto pode ser executado no portainer, ao salvar o arquivo docker-compose.yaml presente [(MiConcorrenciaConectividade/src/dockerfile/gauge/](https://github.com/Oguelo/MiConcorrenciaConectividade/tree/versão-correta/src/dockerfile/gauge) e [(MiConcorrenciaConectividade/src/dockerfile/server/](https://github.com/Oguelo/MiConcorrenciaConectividade/tree/versão-correta/src/dockerfile/server) na aba de stacks.
   ## Executando o arquivo jar no servidor
         Basta startar o container
         
