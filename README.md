@@ -30,12 +30,13 @@ Um serviço público importante é o fornecimento de energia elétrica, pensando
 
 ---
 # Instalação do projeto
-    ## Executando o arquivo jar do servidor:
-         java -jar HttpSoc-jar-with-dependencies.jar
-        
-        
-    ## Executando o arquivo jar do medidor:
+  ## Executando o arquivo jar do medidor:
+
         java -jar StartMedidor-jar-with-dependencies.jar
+
+        
+
+    
        
 ---
 
